@@ -12,7 +12,7 @@ fun AppNavigation() {
 
     NavHost(navController = navController, startDestination = AppScreens.LoginScreen.name) {
         composable(AppScreens.LoginScreen.name) {
-            LoginScreen()
+            LoginScreen(navController = navController)
         }
     }
 }

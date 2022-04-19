@@ -2,44 +2,34 @@ package at.ac.fhcampuswien.momsrecipebook.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 
 @Composable
-fun LoginScreen() {
-
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .background(Color.LightGray)
-            .fillMaxSize()
+fun LoginScreen(navController: NavController) {
+    Scaffold(
+        topBar = { TopBar(title = "Login", navController = navController)}
     ) {
-        Title()
-        Email()
-        Password()
-        SignInButton()
-    }    
-}
-
-@Composable 
-fun Title() {
-    Text(
-        text = "Login",
-        modifier = Modifier
-            .padding(14.dp)
-    )
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .background(Color.White)
+                .fillMaxSize()
+        ) {
+            Email()
+            Password()
+            SignInButton()
+        }
+    }
 }
 
 @Composable
@@ -49,7 +39,8 @@ fun Email() {
     TextField(
         value = email.value,
         onValueChange = {email.value = it},
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
             .padding(16.dp),
         label = {Text(text = "Email Address")}
     )
@@ -62,7 +53,8 @@ fun Password() {
     TextField(
         value = password.value,
         onValueChange = {password.value = it},
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
             .padding(16.dp),
         label = {Text(text = "Password")}
     )
