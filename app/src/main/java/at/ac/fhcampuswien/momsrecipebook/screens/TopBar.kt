@@ -3,6 +3,7 @@ package at.ac.fhcampuswien.momsrecipebook.screens
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
@@ -16,7 +17,7 @@ fun TopBar(title: String, navController: NavController) {
     TopAppBar(backgroundColor = Purple700, elevation = 5.dp) {
         Row {
             Spacer(modifier = Modifier.width(20.dp))
-            Text(text = title)
+            Text(text = title, style = MaterialTheme.typography.subtitle1)
         }
     }
 }
