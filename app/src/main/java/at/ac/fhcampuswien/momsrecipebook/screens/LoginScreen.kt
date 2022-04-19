@@ -12,6 +12,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import at.ac.fhcampuswien.momsrecipebook.navigation.AppScreens
 
 @Composable
 fun LoginScreen(navController: NavController) {
@@ -27,7 +29,7 @@ fun LoginScreen(navController: NavController) {
         ) {
             Email()
             Password()
-            SignInButton()
+            SignInButton(navController = navController)
         }
     }
 }
@@ -61,9 +63,9 @@ fun Password() {
 }
 
 @Composable
-fun SignInButton() {
+fun SignInButton(navController: NavController = rememberNavController()) {
     Button(
-        onClick = {/*TODO*/},
+        onClick = {navController.navigate(route=AppScreens.HomeScreen.name)},
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
