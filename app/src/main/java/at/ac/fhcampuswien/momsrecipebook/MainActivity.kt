@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import at.ac.fhcampuswien.momsrecipebook.auth.EmailPasswordActivity
 import at.ac.fhcampuswien.momsrecipebook.navigation.AppNavigation
 import at.ac.fhcampuswien.momsrecipebook.ui.theme.MomsRecipebookTheme
 
@@ -29,6 +30,8 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+
 
 @Preview(showBackground = true)
 @Composable

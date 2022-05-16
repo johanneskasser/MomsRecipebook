@@ -13,7 +13,7 @@ import androidx.navigation.NavController
 import at.ac.fhcampuswien.momsrecipebook.ui.theme.Purple700
 
 @Composable
-fun TopBar(title: String, navController: NavController) {
+fun TopBar(title: String, navController: NavController, content : @Composable () -> Unit = {}) {
     TopAppBar(backgroundColor = Purple700, elevation = 5.dp) {
         Row {
             Spacer(modifier = Modifier.width(20.dp))

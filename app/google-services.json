@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "757232829158",
+    "project_id": "mom-srecipebook-backend",
+    "storage_bucket": "mom-srecipebook-backend.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:757232829158:android:9e53276364254b8eb7b127",
+        "android_client_info": {
+          "package_name": "at.ac.fhcampuswien.momsrecipebook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "757232829158-re2c4clt5q8uqbh4g0g0juge5kfb8hid.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCq5YZVYydpugtl1E-dmxS5Ff1DjpAmzeo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "757232829158-re2c4clt5q8uqbh4g0g0juge5kfb8hid.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
