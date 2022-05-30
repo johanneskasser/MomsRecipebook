@@ -20,5 +20,4 @@ fun HomeScreen(recipes: List<Recipe>, navController: NavController = rememberNav
             }
         }
     }
-
 }

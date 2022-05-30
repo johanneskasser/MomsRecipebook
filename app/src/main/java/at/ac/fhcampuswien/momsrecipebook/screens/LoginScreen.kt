@@ -24,7 +24,7 @@ import at.ac.fhcampuswien.momsrecipebook.auth.EmailPasswordActivity
 import at.ac.fhcampuswien.momsrecipebook.navigation.AppScreens
 
 @Composable
-fun LoginScreen(navController: NavController, auth : EmailPasswordActivity) {
+fun LoginScreen(navController: NavController, onLoginClick: (email: String, password: String) -> Unit) {
     Scaffold(
         topBar = { TopBar(title = "Login", navController = navController)}
     ) {
@@ -35,7 +35,7 @@ fun LoginScreen(navController: NavController, auth : EmailPasswordActivity) {
                 .background(Color.White)
                 .fillMaxSize()
         ) {
-            LoginForm(onLoginClick = {email, password ->  navController.navigate(AppScreens.HomeScreen.name)}/*{ email, password -> auth.signIn(email = email, password = password, navController = navController)*/ )
+            LoginForm(onLoginClick = {email, password ->  onLoginClick(email, password)}/*{ email, password -> auth.signIn(email = email, password = password, navController = navController)*/ )
         }
     }
 }

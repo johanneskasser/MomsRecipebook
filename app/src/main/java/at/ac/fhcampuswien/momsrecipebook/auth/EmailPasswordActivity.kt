@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.navigation.NavController
+import at.ac.fhcampuswien.momsrecipebook.navigation.AppScreens
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -15,8 +17,8 @@ class EmailPasswordActivity : Activity() {
     private lateinit var auth: FirebaseAuth
 
     public override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         auth = Firebase.auth
+        super.onCreate(savedInstanceState)
     }
 
     // [START on_start_check_user]
@@ -30,7 +32,7 @@ class EmailPasswordActivity : Activity() {
     }
     // [END on_start_check_user]
 
-    fun createAccount(email: String, password: String) {
+    fun createAccount(email: String, password: String, navController: NavController) {
         // [START create_user_with_email]
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
@@ -38,13 +40,13 @@ class EmailPasswordActivity : Activity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success")
                     val user = auth.currentUser
-                    updateUI(user)
+                    updateUI(user, navController)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
                     Toast.makeText(baseContext, "Authentication failed.",
                         Toast.LENGTH_LONG).show()
-                    updateUI(null)
+                    //updateUI(null)
                 }
             }
         // [END create_user_with_email]
@@ -58,13 +60,13 @@ class EmailPasswordActivity : Activity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithEmail:success")
                     val user = auth.currentUser
-                    updateUI(user)
+                    updateUI(user, navController)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
                     Toast.makeText(baseContext, "Authentication failed.",
                         Toast.LENGTH_SHORT).show()
-                    updateUI(null)
+                    //updateUI(null)
                 }
             }
         // [END sign_in_with_email]
@@ -84,8 +86,8 @@ class EmailPasswordActivity : Activity() {
         Firebase.auth.signOut()
     }
 
-    private fun updateUI(user: FirebaseUser?) {
-        TODO("Not yet implemented")
+    private fun updateUI(user: FirebaseUser?, navController: NavController) {
+        navController.navigate(AppScreens.HomeScreen.name)
     }
 
 
