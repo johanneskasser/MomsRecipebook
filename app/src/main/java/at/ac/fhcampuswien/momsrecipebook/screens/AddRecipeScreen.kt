@@ -10,4 +10,5 @@ fun AddRecipeScreen(navController: NavController = rememberNavController()){
     Scaffold(
         topBar = { TopBar(title = "AddRecipe", navController = navController)}
     ){}
+
 }

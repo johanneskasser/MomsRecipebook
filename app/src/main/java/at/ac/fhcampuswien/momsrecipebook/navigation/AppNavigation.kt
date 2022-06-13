@@ -20,7 +20,7 @@ fun AppNavigation(auth: FirebaseAuth) {
     val authViewModel: AuthViewModel = viewModel()
 
 
-    NavHost(navController = navController, startDestination = AppScreens.LoginScreen.name) {
+    NavHost(navController = navController, startDestination = AppScreens.HomeScreen.name) {
         composable(AppScreens.LoginScreen.name) {
             LoginScreen(navController = navController, onLoginClick = {email, password -> authViewModel.signIn(email = email, password = password) { MainActivity().signIn(email, password, navController) }})
         }
