@@ -7,26 +7,30 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import at.ac.fhcampuswien.momsrecipebook.models.Recipe
+import at.ac.fhcampuswien.momsrecipebook.models.getRecipes
 import coil.compose.AsyncImage
 import coil.size.OriginalSize
 import coil.size.Scale
 import coil.size.Scale.*
 
 @Composable
-fun RecipeRow(recipe: Recipe) {
+fun RecipeRow(recipe: Recipe, onItemClick: (String) -> Unit ={}, content: @Composable () -> Unit = {}) {
     Card (
         modifier = Modifier
             .padding(4.dp)
             .fillMaxWidth()
-            .clickable { Unit },
+            .clickable {
+                onItemClick(recipe.id)
+            },
         shape = RoundedCornerShape(4.dp),
         elevation = 6.dp
     ) {
@@ -41,6 +45,24 @@ fun RecipeRow(recipe: Recipe) {
             Spacer(modifier = Modifier.height(4.dp))
             Text(text = recipe.title, style = MaterialTheme.typography.h5)
             Text(text = recipe.description, style = MaterialTheme.typography.h6)
+
+            content()
         }
+    }
+}
+
+@Composable
+fun RemoveIcon(
+    recipe: Recipe = getRecipes()[0],
+    isadded: Boolean = false,
+    onRemoveClick: (Recipe) -> Unit = {}
+){
+    IconButton(modifier = Modifier.width(80.dp),
+        onClick = {onRemoveClick(recipe)}) {
+        Icon(
+            tint = MaterialTheme.colors.secondary,
+            imageVector = Icons.Default.Delete,
+            contentDescription = "remove from list"
+        )
     }
 }

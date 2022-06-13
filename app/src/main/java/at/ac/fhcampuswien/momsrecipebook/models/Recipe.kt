@@ -10,7 +10,7 @@ data class Recipe(
     val id: String,
     val title: String,
     val description: String,
-    val time: Double,
+    val time: String,
     val author: String,
     val images: List<String>,
     val ingredients: List<Ingredient>
@@ -22,7 +22,7 @@ fun getRecipes(): List<Recipe> {
             id= "1",
             title="Gulasch",
             description = "Gulasch ist ein Ragout ungarischen Ursprungs. Was in allen anderen Ländern „Gulasch“, „Gulyas“ oder „goulash“ heißt, ist jedoch in Ungarn das Pörkölt bzw. Paprikás. Nur in Ungarn ist ein gulyás eine Suppe.",
-            time = 2.0,
+            time = "2.0",
             author = "Johannes",
             images = listOf(
                 "https://image.essen-und-trinken.de/11938360/t/fw/v10/w1440/r1/-/klassisches-gulasch-65c26540e76b821bff1211bb12590705-fjt20161203801-jpg--57833-.jpg",
@@ -40,7 +40,7 @@ fun getRecipes(): List<Recipe> {
             id= "2",
             title="Erdbeer Tiramisu",
             description = "Dieses Erdbeer Tiramisu wird Sie aufgrund seiner Fruchtigkeit und seines einfachen Rezeptes begeistern.",
-            time = 6.6,
+            time = "6.6",
             author = "Johannes",
             images = listOf(
                 "https://www.gutekueche.at/storage/media/recipe/11379/resp/erdbeer-tiramisu___webp_940_625.webp",
@@ -58,7 +58,7 @@ fun getRecipes(): List<Recipe> {
             id= "3",
             title="Pulled Pork",
             description = "Pulled Pork - der Klassiker aus den USA ist jetzt auch bei uns angekommen – so gelingt ein perfektes Pulled Pork zu Hause am Grill oder im Ofen.",
-            time = 9.9,
+            time = "9.9",
             author = "Johannes",
             images = listOf(
                 "https://www.gutekueche.at/storage/media/recipe/39620/resp/pulled-pork___webp_620_414.webp",
@@ -76,7 +76,7 @@ fun getRecipes(): List<Recipe> {
             id= "4",
             title=" Lachs vom Grill",
             description = "Der Lachs vom Grill ist ein köstliches Rezept auch für Kochanfänger. Einfach den Fisch mit der Marinade bestreichen und ab auf den Grill.",
-            time = 9.9,
+            time = "9.9",
             author = "Johannes",
             images = listOf(
                 "https://www.gutekueche.at/storage/media/recipe/26860/resp/lachs-vom-grill___webp_620_413.webp",
