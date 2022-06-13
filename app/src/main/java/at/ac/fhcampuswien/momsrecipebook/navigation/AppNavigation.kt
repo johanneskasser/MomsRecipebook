@@ -8,6 +8,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import at.ac.fhcampuswien.momsrecipebook.MainActivity
+import at.ac.fhcampuswien.momsrecipebook.apiclient.ApiCalls
+import at.ac.fhcampuswien.momsrecipebook.apiclient.RecipeBookAPI
 import at.ac.fhcampuswien.momsrecipebook.auth.EmailPasswordActivity
 import at.ac.fhcampuswien.momsrecipebook.models.getRecipes
 import at.ac.fhcampuswien.momsrecipebook.screens.AddRecipeScreen
@@ -23,10 +25,11 @@ fun AppNavigation(auth: FirebaseAuth) {
     val navController = rememberNavController()
     val authViewModel: AuthViewModel = viewModel()
     val addRecipeViewModel: AddRecipeViewModel = viewModel()
+    val apiCalls: ApiCalls = ApiCalls()
 
-    NavHost(navController = navController, startDestination = AppScreens.HomeScreen.name) {
+    NavHost(navController = navController, startDestination = AppScreens.LoginScreen.name) {
         composable(AppScreens.LoginScreen.name) {
-            LoginScreen(navController = navController, onLoginClick = {email, password -> authViewModel.signIn(email = email, password = password) { MainActivity().signIn(email, password, navController) }})
+            LoginScreen(navController = navController, onLoginClick = {email, password -> apiCalls.login(email = email, password = password, navController = navController)})
         }
         composable(AppScreens.HomeScreen.name){
             HomeScreen(navController = navController, addRecipeViewModel)
