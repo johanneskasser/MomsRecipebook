@@ -76,4 +76,20 @@ class ApiCalls {
 
         })
     }
+
+    fun createRecipe(recipe: Recipe, addRecipeViewModel: AddRecipeViewModel, navController: NavController) {
+        apiInterface.createRecipe(recipe = recipe).enqueue( object : Callback<Recipe> {
+            override fun onResponse(call: Call<Recipe>, response: Response<Recipe>) {
+                if(response.isSuccessful) {
+                    val fullRecipe : Recipe? = response.body()
+                    fullRecipe?.let { addRecipeViewModel.removeRecipe(recipe = recipe); addRecipeViewModel.addRecipe(fullRecipe); navController.navigate(AppScreens.HomeScreen.name) }
+                }
+            }
+
+            override fun onFailure(call: Call<Recipe>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+
+        })
+    }
 }

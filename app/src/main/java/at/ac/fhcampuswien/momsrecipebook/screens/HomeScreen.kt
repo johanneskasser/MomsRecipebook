@@ -1,6 +1,7 @@
 package at.ac.fhcampuswien.momsrecipebook.screens
 
 import TopBar
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,10 +29,10 @@ import at.ac.fhcampuswien.momsrecipebook.widgets.RecipeRow
 import at.ac.fhcampuswien.momsrecipebook.widgets.RemoveIcon
 
 @Composable
-fun HomeScreen( navController: NavController = rememberNavController(), viewModel: AddRecipeViewModel, onLogoutEvent: (Unit) -> Unit = {}){
+fun HomeScreen( navController: NavController = rememberNavController(), viewModel: AddRecipeViewModel, onLogoutEvent: (String) -> Unit = {}){
 
     Scaffold(topBar = {
-        TopAppBar(navController = navController, onLogout = { onLogoutEvent })
+        TopAppBar(navController = navController, onLogout = { onLogoutEvent("Logout") })
     }){
         MainContent(navController = navController, addRecipeViewModel = viewModel, recipes = viewModel.addedrecipes)
     }
@@ -45,8 +46,8 @@ fun MainContent(navController: NavController, addRecipeViewModel: AddRecipeViewM
             RecipeRow(recipe = recipe,
                 onItemClick = {id -> navController.navigate(AppScreens.DetailScreen.name+"/$id")})
             {
-                RemoveIcon(recipe){r ->
-                    if(addRecipeViewModel.isadded(r)){
+                RemoveIcon(recipe) { r ->
+                    if (addRecipeViewModel.isadded(r)) {
                         addRecipeViewModel.removeRecipe(r)
                     }
                 }
@@ -56,7 +57,7 @@ fun MainContent(navController: NavController, addRecipeViewModel: AddRecipeViewM
 }
 
 @Composable
-fun TopAppBar(navController: NavController, onLogout: (Unit) -> Unit = {}) {
+fun TopAppBar(navController: NavController, onLogout: (String) -> Unit = {}) {
     var showMenu by remember { mutableStateOf(false)}
 
     TopAppBar(
@@ -83,7 +84,7 @@ fun TopAppBar(navController: NavController, onLogout: (Unit) -> Unit = {}) {
                         )
                     }
                 }
-                DropdownMenuItem(onClick = { onLogout }) {
+                DropdownMenuItem(onClick = { onLogout("Logout") }) {
                     Row {
                         Icon(
                             imageVector = Icons.Default.Lock,

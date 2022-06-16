@@ -13,4 +13,8 @@ class AuthViewModel : ViewModel() {
     fun logout() {
         signedInUser = null
     }
+
+    fun getUser() : User? {
+        return signedInUser
+    }
 }

@@ -13,7 +13,7 @@ data class Ingredient(
 
 data class Recipe(
     @SerializedName("_id")
-    val id: String,
+    val id: String?,
     @SerializedName("title")
     val title: String,
     @SerializedName("description")
@@ -21,7 +21,7 @@ data class Recipe(
     @SerializedName("time")
     val time: String,
     @SerializedName("author")
-    val author: String,
+    val author: String?,
     @SerializedName("images")
     val images: List<String>,
     @SerializedName("ingredients")

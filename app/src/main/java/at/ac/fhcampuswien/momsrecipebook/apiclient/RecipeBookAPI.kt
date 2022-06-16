@@ -18,6 +18,9 @@ interface RecipeBookAPI {
     @POST("logout")
     fun logout(): Call<Unit>
 
+    @POST("createRecipe")
+    fun createRecipe(@Body recipe: Recipe) : Call<Recipe>
+
     companion object {
         var BASE_URL = "https://recipebookbkend.herokuapp.com/api/"
 

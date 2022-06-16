@@ -21,7 +21,9 @@ import java.util.*
 @Composable
 fun AddRecipeScreen(
     navController: NavController = rememberNavController(),
-    viewModel: AddRecipeViewModel
+    viewModel: AddRecipeViewModel,
+    author : String?,
+    addNewRecipe: (Recipe) -> Unit = {}
 ){
     Scaffold(topBar = {
 
@@ -29,12 +31,12 @@ fun AddRecipeScreen(
             Text(text = "Add a Recipe")
         }
     }){
-        AddRecipe(addRecipeViewModel = viewModel, ingredients = viewModel.addedingredient, links = viewModel.addedlinks)
+        AddRecipe(addRecipeViewModel = viewModel, ingredients = viewModel.addedingredient, links = viewModel.addedlinks, author = author, addNewRecipe = {recipe -> addNewRecipe(recipe)})
     }
 }
 
 @Composable
-fun AddRecipe(addRecipeViewModel: AddRecipeViewModel, ingredients: List<String>, links: List<String>){
+fun AddRecipe(addRecipeViewModel: AddRecipeViewModel, ingredients: List<String>, links: List<String>, author: String?, addNewRecipe: (Recipe) -> (Unit) = {} ){
 
     Column(modifier = Modifier
         .fillMaxWidth()
@@ -69,14 +71,6 @@ fun AddRecipe(addRecipeViewModel: AddRecipeViewModel, ingredients: List<String>,
             value = description,
             onValueChange = { value -> description = value },
             label = { Text(text = "Description") }
-        )
-
-        var author by remember { mutableStateOf("") }
-
-        OutlinedTextField(
-            value = author,
-            onValueChange = { value -> author = value },
-            label = { Text(text = "Author") }
         )
 
         var quantity by remember { mutableStateOf("")}
@@ -169,9 +163,10 @@ fun AddRecipe(addRecipeViewModel: AddRecipeViewModel, ingredients: List<String>,
             onClick = {
                 val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMANY)
                 val currentDate = sdf.format(Date())
-                val newRecipe = Recipe(id,title,description,currentDate,author,links,ingredients)
+                val newRecipe = Recipe(id = null, title = title, description = description, time = currentDate, images = links, ingredients = ingredients, author = author)
 
                 addRecipeViewModel.addRecipe(newRecipe)
+                addNewRecipe(newRecipe)
             }
         ) {
             Text(text = "Save")

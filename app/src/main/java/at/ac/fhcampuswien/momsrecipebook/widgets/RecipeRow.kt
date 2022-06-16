@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
@@ -29,23 +30,28 @@ fun RecipeRow(recipe: Recipe, onItemClick: (String) -> Unit = {}, content: @Comp
             .padding(4.dp)
             .fillMaxWidth()
             .clickable {
-                onItemClick(recipe.id)
+                recipe.id?.let { onItemClick(it) }
             },
         shape = RoundedCornerShape(4.dp),
         elevation = 6.dp
     ) {
-        Column(modifier = Modifier.padding(6.dp)) {
-            LazyRow {
-                for (image in recipe.images) {
-                    item {
-                        AsyncImage(model = image, contentDescription = "${recipe.title} ${recipe.id}" ,contentScale = ContentScale.Crop,modifier = Modifier.size(400.dp,150.dp))
+        Row(modifier = Modifier
+            .padding(6.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column(modifier = Modifier.padding(6.dp)) {
+                LazyRow {
+                    for (image in recipe.images) {
+                        item {
+                            AsyncImage(model = image, contentDescription = "${recipe.title} ${recipe.id}" ,contentScale = ContentScale.Crop,modifier = Modifier.size(400.dp,150.dp))
+                        }
                     }
                 }
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(text = recipe.title, style = MaterialTheme.typography.h5)
+                Text(text = recipe.description, style = MaterialTheme.typography.h6)
             }
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(text = recipe.title, style = MaterialTheme.typography.h5)
-            Text(text = recipe.description, style = MaterialTheme.typography.h6)
-
             content()
         }
     }

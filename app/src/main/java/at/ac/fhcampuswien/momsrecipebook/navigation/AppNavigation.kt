@@ -45,7 +45,7 @@ fun AppNavigation() {
                 })
         }
         composable(AppScreens.HomeScreen.name) {
-            HomeScreen(navController = navController, addRecipeViewModel, onLogoutEvent = {apiCalls.logout(navController = navController, authViewModel = authViewModel)})
+            HomeScreen(navController = navController, addRecipeViewModel, onLogoutEvent = { apiCalls.logout(navController = navController, authViewModel = authViewModel) })
         }
         composable(
             route = AppScreens.DetailScreen.name + "/{id}",
@@ -60,7 +60,17 @@ fun AppNavigation() {
             )
         }
         composable(AppScreens.AddRecipeScreen.name) {
-            AddRecipeScreen(navController = navController, addRecipeViewModel)
+            AddRecipeScreen(
+                navController = navController,
+                viewModel = addRecipeViewModel,
+                author = authViewModel.getUser()?._id,
+                addNewRecipe = { recipe ->
+                    apiCalls.createRecipe(
+                        recipe = recipe,
+                        addRecipeViewModel = addRecipeViewModel,
+                        navController = navController
+                    )
+                })
         }
     }
 }
