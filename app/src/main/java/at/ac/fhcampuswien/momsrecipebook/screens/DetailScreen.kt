@@ -20,8 +20,8 @@ import at.ac.fhcampuswien.momsrecipebook.widgets.RecipeRow
 import at.ac.fhcampuswien.momsrecipebook.widgets.RemoveIcon
 import java.lang.reflect.Modifier
 
-fun filterRecipe(id: String?): Recipe{
-    return getRecipes().filter { it.id == id }[0]
+fun filterRecipe(id: String?, recipe: List<Recipe>): Recipe{
+    return recipe.filter { it.id == id }[0]
 }
 
 @Composable
@@ -30,19 +30,19 @@ fun DetailScreen(
     id: String?,
     viewModel: AddRecipeViewModel
 ){
-    val recipe = filterRecipe(id = id)
+    val recipe = filterRecipe(id = id, recipe = viewModel.addedrecipes)
     
     Scaffold(
         topBar = { SimpleTopAppBar(arrowBackClicked = {navController.popBackStack()}){
             Text(text = recipe.title)
         } }
     ){
-        MainContent(recipe = recipe, addRecipeViewModel = viewModel)
+        MainContent(recipe = recipe)
     }
 }
 
 @Composable
-fun MainContent(recipe: Recipe, addRecipeViewModel: AddRecipeViewModel){
+fun MainContent(recipe: Recipe){
     Surface(
         modifier = androidx.compose.ui.Modifier
             .fillMaxWidth()
@@ -52,13 +52,7 @@ fun MainContent(recipe: Recipe, addRecipeViewModel: AddRecipeViewModel){
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ){
-            RecipeRow(recipe = recipe){
-                RemoveIcon(){r ->
-                    if(addRecipeViewModel.isadded(r)){
-                        addRecipeViewModel.removeRecipe(r)
-                    }
-                }
-            }
+            RecipeRow(recipe = recipe)
         }
     }
 }

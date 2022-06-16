@@ -29,7 +29,7 @@ fun HomeScreen( navController: NavController = rememberNavController(), viewMode
 
     Scaffold(topBar = {
         TopAppBar(
-            title = { Text("Movies") },
+            title = { Text("Moms Recipe Book") },
             actions = {
                 IconButton(onClick = { showMenu = !showMenu }) {
                     Icon(imageVector = Icons.Default.MoreVert, contentDescription = "More")
@@ -49,19 +49,19 @@ fun HomeScreen( navController: NavController = rememberNavController(), viewMode
             }
         )
     }){
-        MainContent(navController = navController, addRecipeViewModel = viewModel)
+        MainContent(navController = navController, addRecipeViewModel = viewModel, recipes = viewModel.addedrecipes)
     }
 
 }
 
 @Composable
-fun MainContent(navController: NavController, addRecipeViewModel: AddRecipeViewModel, recipes: List<Recipe> = getRecipes()){
+fun MainContent(navController: NavController, addRecipeViewModel: AddRecipeViewModel, recipes: List<Recipe>){
     LazyColumn{
         items(recipes) { recipe ->
             RecipeRow(recipe = recipe,
                 onItemClick = {id -> navController.navigate(AppScreens.DetailScreen.name+"/$id")})
             {
-                RemoveIcon(){r ->
+                RemoveIcon(recipe){r ->
                     if(addRecipeViewModel.isadded(r)){
                         addRecipeViewModel.removeRecipe(r)
                     }

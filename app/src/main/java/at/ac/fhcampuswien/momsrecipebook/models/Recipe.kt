@@ -1,7 +1,7 @@
 package at.ac.fhcampuswien.momsrecipebook.models
 
 data class Ingredient(
-    val quantity: Int,
+    val quantity: String,
     val unit: String,
     val name: String
 )
@@ -30,10 +30,10 @@ fun getRecipes(): List<Recipe> {
                 "https://images.eatsmarter.de/sites/default/files/styles/1600x1200/public/gulasch-mit-paprika-und-petersilie-60973.jpg"
             ),
             ingredients = listOf(
-                Ingredient(quantity = 1, unit = "kg", name = "Gulaschfleisch im Ganzen vom Rind"),
-                Ingredient(quantity = 1, unit = "stk", name = "Zwiebeln"),
-                Ingredient(quantity = 4, unit = "ml", name = "Öl zum Anrösten"),
-                Ingredient(quantity = 2, unit = "g", name = "Paprikapulver (edelsüß)")
+                Ingredient(quantity = "1", unit = "kg", name = "Gulaschfleisch im Ganzen vom Rind"),
+                Ingredient(quantity = "1", unit = "stk", name = "Zwiebeln"),
+                Ingredient(quantity = "4", unit = "ml", name = "Öl zum Anrösten"),
+                Ingredient(quantity = "2", unit = "g", name = "Paprikapulver (edelsüß)")
             )
         ),
         Recipe(
@@ -48,10 +48,10 @@ fun getRecipes(): List<Recipe> {
                 "https://www.gutekueche.at/storage/media/recipe/11381/resp/erdbeer-tiramisu_1469524254___webp_620_465.webp"
             ),
             ingredients = listOf(
-                Ingredient(quantity = 1, unit = "kg", name = "Erdbeeren"),
-                Ingredient(quantity = 750, unit = "g", name = "Mascarpone"),
-                Ingredient(quantity = 500, unit = "g", name = "Magertopfen"),
-                Ingredient(quantity = 2, unit = "EL", name = "Zitronensaft")
+                Ingredient(quantity = "1", unit = "kg", name = "Erdbeeren"),
+                Ingredient(quantity = "750", unit = "g", name = "Mascarpone"),
+                Ingredient(quantity = "500", unit = "g", name = "Magertopfen"),
+                Ingredient(quantity = "2", unit = "EL", name = "Zitronensaft")
             )
         ),
         Recipe(
@@ -66,10 +66,10 @@ fun getRecipes(): List<Recipe> {
                 "https://images.eatsmarter.de/sites/default/files/styles/max_size/public/vegane-pulled-pork-burger-639570-1.jpg"
             ),
             ingredients = listOf(
-                Ingredient(quantity = 2, unit = "kg", name = "Schweinenacken od. Schweineschulter"),
-                Ingredient(quantity = 6, unit = "EL", name = "Paprikapulver (edelsüß)"),
-                Ingredient(quantity = 2, unit = "EL", name = "Zucker"),
-                Ingredient(quantity = 2, unit = "EL", name = "Salz")
+                Ingredient(quantity = "2", unit = "kg", name = "Schweinenacken od. Schweineschulter"),
+                Ingredient(quantity = "6", unit = "EL", name = "Paprikapulver (edelsüß)"),
+                Ingredient(quantity = "2", unit = "EL", name = "Zucker"),
+                Ingredient(quantity = "2", unit = "EL", name = "Salz")
             )
         ),
         Recipe(
@@ -84,10 +84,10 @@ fun getRecipes(): List<Recipe> {
                 "https://www.springlane.de/magazin/wp-content/uploads/2016/08/Lachs-Grillen-How-To-6-1.jpg"
             ),
             ingredients = listOf(
-                Ingredient(quantity = 4, unit = "Stk", name = "Lachssteak (mit Haut)"),
-                Ingredient(quantity = 2, unit = "Stk", name = "Limetten (oder Zitronen)"),
-                Ingredient(quantity = 4, unit = "EL", name = "Olivenöl"),
-                Ingredient(quantity = 1, unit = "Bund", name = "Dill")
+                Ingredient(quantity = "4", unit = "Stk", name = "Lachssteak (mit Haut)"),
+                Ingredient(quantity = "2", unit = "Stk", name = "Limetten (oder Zitronen)"),
+                Ingredient(quantity = "4", unit = "EL", name = "Olivenöl"),
+                Ingredient(quantity = "1", unit = "Bund", name = "Dill")
             )
         ),
     )
