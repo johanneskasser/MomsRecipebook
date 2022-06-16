@@ -1,19 +1,31 @@
 package at.ac.fhcampuswien.momsrecipebook.models
 
+import com.google.gson.annotations.SerializedName
+
 data class Ingredient(
+    @SerializedName("Quantity")
     val quantity: String,
+    @SerializedName("Unit")
     val unit: String,
+    @SerializedName("Name")
     val name: String
 )
 
 data class Recipe(
+    @SerializedName("_id")
     val id: String,
+    @SerializedName("title")
     val title: String,
+    @SerializedName("description")
     val description: String,
+    @SerializedName("time")
     val time: String,
+    @SerializedName("author")
     val author: String,
+    @SerializedName("images")
     val images: List<String>,
-    val ingredients: List<Ingredient>
+    @SerializedName("ingredients")
+    val ingredients: List<String>
 )
 
 fun getRecipes(): List<Recipe> {
@@ -30,10 +42,10 @@ fun getRecipes(): List<Recipe> {
                 "https://images.eatsmarter.de/sites/default/files/styles/1600x1200/public/gulasch-mit-paprika-und-petersilie-60973.jpg"
             ),
             ingredients = listOf(
-                Ingredient(quantity = "1", unit = "kg", name = "Gulaschfleisch im Ganzen vom Rind"),
-                Ingredient(quantity = "1", unit = "stk", name = "Zwiebeln"),
-                Ingredient(quantity = "4", unit = "ml", name = "Öl zum Anrösten"),
-                Ingredient(quantity = "2", unit = "g", name = "Paprikapulver (edelsüß)")
+                Ingredient(quantity = "1", unit = "kg", name = "Gulaschfleisch im Ganzen vom Rind").toString(),
+                Ingredient(quantity = "1", unit = "stk", name = "Zwiebeln").toString(),
+                Ingredient(quantity = "4", unit = "ml", name = "Öl zum Anrösten").toString(),
+                Ingredient(quantity = "2", unit = "g", name = "Paprikapulver (edelsüß)").toString()
             )
         ),
         Recipe(
@@ -48,10 +60,10 @@ fun getRecipes(): List<Recipe> {
                 "https://www.gutekueche.at/storage/media/recipe/11381/resp/erdbeer-tiramisu_1469524254___webp_620_465.webp"
             ),
             ingredients = listOf(
-                Ingredient(quantity = "1", unit = "kg", name = "Erdbeeren"),
-                Ingredient(quantity = "750", unit = "g", name = "Mascarpone"),
-                Ingredient(quantity = "500", unit = "g", name = "Magertopfen"),
-                Ingredient(quantity = "2", unit = "EL", name = "Zitronensaft")
+                Ingredient(quantity = "1", unit = "kg", name = "Erdbeeren").toString(),
+                Ingredient(quantity = "750", unit = "g", name = "Mascarpone").toString(),
+                Ingredient(quantity = "500", unit = "g", name = "Magertopfen").toString(),
+                Ingredient(quantity = "2", unit = "EL", name = "Zitronensaft").toString()
             )
         ),
         Recipe(
@@ -66,10 +78,10 @@ fun getRecipes(): List<Recipe> {
                 "https://images.eatsmarter.de/sites/default/files/styles/max_size/public/vegane-pulled-pork-burger-639570-1.jpg"
             ),
             ingredients = listOf(
-                Ingredient(quantity = "2", unit = "kg", name = "Schweinenacken od. Schweineschulter"),
-                Ingredient(quantity = "6", unit = "EL", name = "Paprikapulver (edelsüß)"),
-                Ingredient(quantity = "2", unit = "EL", name = "Zucker"),
-                Ingredient(quantity = "2", unit = "EL", name = "Salz")
+                Ingredient(quantity = "2", unit = "kg", name = "Schweinenacken od. Schweineschulter").toString(),
+                Ingredient(quantity = "6", unit = "EL", name = "Paprikapulver (edelsüß)").toString(),
+                Ingredient(quantity = "2", unit = "EL", name = "Zucker").toString(),
+                Ingredient(quantity = "2", unit = "EL", name = "Salz").toString()
             )
         ),
         Recipe(
@@ -84,10 +96,10 @@ fun getRecipes(): List<Recipe> {
                 "https://www.springlane.de/magazin/wp-content/uploads/2016/08/Lachs-Grillen-How-To-6-1.jpg"
             ),
             ingredients = listOf(
-                Ingredient(quantity = "4", unit = "Stk", name = "Lachssteak (mit Haut)"),
-                Ingredient(quantity = "2", unit = "Stk", name = "Limetten (oder Zitronen)"),
-                Ingredient(quantity = "4", unit = "EL", name = "Olivenöl"),
-                Ingredient(quantity = "1", unit = "Bund", name = "Dill")
+                Ingredient(quantity = "4", unit = "Stk", name = "Lachssteak (mit Haut)").toString(),
+                Ingredient(quantity = "2", unit = "Stk", name = "Limetten (oder Zitronen)").toString(),
+                Ingredient(quantity = "4", unit = "EL", name = "Olivenöl").toString(),
+                Ingredient(quantity = "1", unit = "Bund", name = "Dill").toString()
             )
         ),
     )

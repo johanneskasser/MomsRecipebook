@@ -30,15 +30,15 @@ class AddRecipeViewModel : ViewModel() {
         return exists(recipe)
     }
 
-    private val _addedingredients = mutableStateListOf<Ingredient>()
-    val addedingredient: List<Ingredient>
+    private val _addedingredients = mutableStateListOf<String>()
+    val addedingredient: List<String>
         get() = _addedingredients
 
-    fun addingredient(ingredient: Ingredient){
+    fun addingredient(ingredient: String){
         _addedingredients.add(ingredient)
     }
 
-    fun removealling(ingredient: List<Ingredient>) {
+    fun removealling(ingredient: List<String>) {
         _addedingredients.removeAll(ingredient)
     }
 

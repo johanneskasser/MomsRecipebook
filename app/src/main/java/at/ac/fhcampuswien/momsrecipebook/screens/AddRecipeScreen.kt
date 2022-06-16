@@ -1,14 +1,11 @@
 package at.ac.fhcampuswien.momsrecipebook.screens
 
 import SimpleTopAppBar
-import TopBar
-import android.provider.MediaStore
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.PlusOne
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,7 +15,6 @@ import androidx.navigation.compose.rememberNavController
 import at.ac.fhcampuswien.momsrecipebook.models.Ingredient
 import at.ac.fhcampuswien.momsrecipebook.models.Recipe
 import at.ac.fhcampuswien.momsrecipebook.viewmodels.AddRecipeViewModel
-import org.intellij.lang.annotations.JdkConstants
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -38,7 +34,7 @@ fun AddRecipeScreen(
 }
 
 @Composable
-fun AddRecipe(addRecipeViewModel: AddRecipeViewModel, ingredients: List<Ingredient>, links: List<String>){
+fun AddRecipe(addRecipeViewModel: AddRecipeViewModel, ingredients: List<String>, links: List<String>){
 
     Column(modifier = Modifier
         .fillMaxWidth()
@@ -110,7 +106,7 @@ fun AddRecipe(addRecipeViewModel: AddRecipeViewModel, ingredients: List<Ingredie
         Row {
             IconButton(
                 onClick = {
-                    val newIngredient = Ingredient(quantity, unit, name)
+                    val newIngredient = Ingredient(quantity, unit, name).toString()
                     addRecipeViewModel.addingredient(newIngredient)
                 }) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "add")

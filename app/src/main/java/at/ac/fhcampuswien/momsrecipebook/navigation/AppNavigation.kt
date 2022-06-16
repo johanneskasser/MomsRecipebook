@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.momsrecipebook.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
@@ -7,21 +8,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import at.ac.fhcampuswien.momsrecipebook.MainActivity
 import at.ac.fhcampuswien.momsrecipebook.apiclient.ApiCalls
-import at.ac.fhcampuswien.momsrecipebook.apiclient.RecipeBookAPI
-import at.ac.fhcampuswien.momsrecipebook.auth.EmailPasswordActivity
-import at.ac.fhcampuswien.momsrecipebook.models.getRecipes
 import at.ac.fhcampuswien.momsrecipebook.screens.AddRecipeScreen
 import at.ac.fhcampuswien.momsrecipebook.screens.DetailScreen
 import at.ac.fhcampuswien.momsrecipebook.screens.HomeScreen
 import at.ac.fhcampuswien.momsrecipebook.screens.LoginScreen
 import at.ac.fhcampuswien.momsrecipebook.viewmodel.AuthViewModel
 import at.ac.fhcampuswien.momsrecipebook.viewmodels.AddRecipeViewModel
-import com.google.firebase.auth.FirebaseAuth
 
 @Composable
-fun AppNavigation(auth: FirebaseAuth) {
+fun AppNavigation() {
     val navController = rememberNavController()
     val authViewModel: AuthViewModel = viewModel()
     val addRecipeViewModel: AddRecipeViewModel = viewModel()
@@ -29,20 +25,41 @@ fun AppNavigation(auth: FirebaseAuth) {
 
     NavHost(navController = navController, startDestination = AppScreens.LoginScreen.name) {
         composable(AppScreens.LoginScreen.name) {
-            LoginScreen(navController = navController, onLoginClick = {email, password -> apiCalls.login(email = email, password = password, navController = navController)})
+            LoginScreen(
+                navController = navController,
+                onLoginClick = { email, password ->
+                    apiCalls.login(
+                        email = email,
+                        password = password,
+                        navController = navController,
+                        onFailure = { Log.d("Login Error", "Login failed") },           //TODO Add Information About Wrong Login in UI
+                        onSuccess = { user ->
+                            authViewModel.signIn(user)
+                            user._id?.let { uid ->
+                                apiCalls.getRecipes(
+                                    userID = uid,
+                                    addRecipeViewModel = addRecipeViewModel,
+                                    onFailure = { errormessage -> Log.e("Error", errormessage) })  //TODO Add Information About Failed Fetch in UI
+                            }
+                        })
+                })
         }
-        composable(AppScreens.HomeScreen.name){
-            HomeScreen(navController = navController, addRecipeViewModel)
+        composable(AppScreens.HomeScreen.name) {
+            HomeScreen(navController = navController, addRecipeViewModel, onLogoutEvent = {apiCalls.logout(navController = navController, authViewModel = authViewModel)})
         }
-        composable(route = AppScreens.DetailScreen.name+"/{id}",
-                arguments = listOf(navArgument(name = "id"){
-                    type = NavType.StringType
-        })){navBackStackEntry ->
+        composable(
+            route = AppScreens.DetailScreen.name + "/{id}",
+            arguments = listOf(navArgument(name = "id") {
+                type = NavType.StringType
+            })
+        ) { navBackStackEntry ->
 
-            DetailScreen(navController = navController,
-                id = navBackStackEntry.arguments?.getString("id"), addRecipeViewModel)
+            DetailScreen(
+                navController = navController,
+                id = navBackStackEntry.arguments?.getString("id"), addRecipeViewModel
+            )
         }
-        composable(AppScreens.AddRecipeScreen.name){
+        composable(AppScreens.AddRecipeScreen.name) {
             AddRecipeScreen(navController = navController, addRecipeViewModel)
         }
     }

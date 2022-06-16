@@ -1,9 +1,16 @@
 package at.ac.fhcampuswien.momsrecipebook.viewmodel
 
 import androidx.lifecycle.ViewModel
+import at.ac.fhcampuswien.momsrecipebook.models.User
 
 class AuthViewModel : ViewModel() {
-    fun signIn(email: String, password: String, onCall: () -> Unit) {
+    var signedInUser: User? = null
 
+    fun signIn(user: User) {
+        signedInUser = user
+    }
+
+    fun logout() {
+        signedInUser = null
     }
 }

@@ -23,7 +23,7 @@ import coil.size.Scale
 import coil.size.Scale.*
 
 @Composable
-fun RecipeRow(recipe: Recipe, onItemClick: (String) -> Unit ={}, content: @Composable () -> Unit = {}) {
+fun RecipeRow(recipe: Recipe, onItemClick: (String) -> Unit = {}, content: @Composable () -> Unit = {}) {
     Card (
         modifier = Modifier
             .padding(4.dp)
