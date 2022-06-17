@@ -9,10 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import at.ac.fhcampuswien.momsrecipebook.apiclient.ApiCalls
-import at.ac.fhcampuswien.momsrecipebook.screens.AddRecipeScreen
-import at.ac.fhcampuswien.momsrecipebook.screens.DetailScreen
-import at.ac.fhcampuswien.momsrecipebook.screens.HomeScreen
-import at.ac.fhcampuswien.momsrecipebook.screens.LoginScreen
+import at.ac.fhcampuswien.momsrecipebook.screens.*
 import at.ac.fhcampuswien.momsrecipebook.viewmodel.AuthViewModel
 import at.ac.fhcampuswien.momsrecipebook.viewmodels.AddRecipeViewModel
 
@@ -81,6 +78,12 @@ fun AppNavigation() {
                         navController = navController
                     )
                 })
+        }
+        composable(route = AppScreens.EditScreen.name+"/{id}",
+            arguments = listOf(navArgument(name = "id"){
+                type = NavType.StringType
+            })){navBackStackEntry ->
+            EditScreen(navController = navController,id = navBackStackEntry.arguments?.getString("id"), addRecipeViewModel)
         }
     }
 }

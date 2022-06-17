@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -72,3 +73,12 @@ fun RemoveIcon(
         )
     }
 }
+
+@Composable
+fun EditIcon(recipe: Recipe, onEditClick: (String) -> Unit ={}, content: @Composable () -> Unit? = {}) {
+    IconButton(onClick = { recipe.id?.let { onEditClick(it) } }) {
+        Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit")
+    }
+
+}
+

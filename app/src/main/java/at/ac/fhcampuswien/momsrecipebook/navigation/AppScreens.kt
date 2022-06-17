@@ -5,5 +5,6 @@ enum class AppScreens {
     RegisterScreen,
     HomeScreen,
     DetailScreen,
-    AddRecipeScreen
+    AddRecipeScreen,
+    EditScreen
 }

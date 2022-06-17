@@ -25,6 +25,7 @@ import at.ac.fhcampuswien.momsrecipebook.models.Recipe
 import at.ac.fhcampuswien.momsrecipebook.models.getRecipes
 import at.ac.fhcampuswien.momsrecipebook.navigation.AppScreens
 import at.ac.fhcampuswien.momsrecipebook.viewmodels.AddRecipeViewModel
+import at.ac.fhcampuswien.momsrecipebook.widgets.EditIcon
 import at.ac.fhcampuswien.momsrecipebook.widgets.RecipeRow
 import at.ac.fhcampuswien.momsrecipebook.widgets.RemoveIcon
 
@@ -46,9 +47,15 @@ fun MainContent(navController: NavController, addRecipeViewModel: AddRecipeViewM
             RecipeRow(recipe = recipe,
                 onItemClick = {id -> navController.navigate(AppScreens.DetailScreen.name+"/$id")})
             {
-                RemoveIcon(recipe) { r ->
-                    if (addRecipeViewModel.isadded(r)) {
-                        addRecipeViewModel.removeRecipe(r)
+                Row {
+
+                    EditIcon(recipe = recipe,
+                        onEditClick = {id -> navController.navigate(AppScreens.EditScreen.name+"/$id")})
+
+                    RemoveIcon(recipe){r ->
+                        if(addRecipeViewModel.isadded(r)){
+                            addRecipeViewModel.removeRecipe(r)
+                        }
                     }
                 }
             }

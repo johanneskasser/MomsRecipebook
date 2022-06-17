@@ -14,60 +14,44 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import at.ac.fhcampuswien.momsrecipebook.models.Ingredient
 import at.ac.fhcampuswien.momsrecipebook.models.Recipe
+import at.ac.fhcampuswien.momsrecipebook.models.getRecipes
+import at.ac.fhcampuswien.momsrecipebook.navigation.AppScreens
 import at.ac.fhcampuswien.momsrecipebook.viewmodels.AddRecipeViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
+fun filterRecipe2(id: String?, recipe: List<Recipe>): Recipe {
+    return recipe.filter { it.id == id }[0]
+}
 @Composable
-fun AddRecipeScreen(
+fun EditScreen(
     navController: NavController = rememberNavController(),
-    viewModel: AddRecipeViewModel,
-    author: String?,
-    addNewRecipe: (Recipe) -> Unit = {}
-) {
+    id : String?,
+    viewModel: AddRecipeViewModel
+){
+    val recipe = filterRecipe2(id = id, recipe = viewModel.addedrecipes)
     Scaffold(topBar = {
 
-        SimpleTopAppBar(arrowBackClicked = { navController.popBackStack() }) {
-            Text(text = "Add a Recipe")
+        SimpleTopAppBar(arrowBackClicked = {navController.popBackStack()}) {
+            Text(text = "Edit the Recipe: ${recipe.title}")
         }
-    }) {
-        AddRecipe(
-            addRecipeViewModel = viewModel,
-            ingredients = viewModel.addedingredient,
-            links = viewModel.addedlinks,
-            author = author,
-            addNewRecipe = { recipe -> addNewRecipe(recipe) })
+    }){
+        recipe.id?.let { it1 -> EditRecipe(navController = navController, addRecipeViewModel = viewModel, ingredients = viewModel.addedingredient, links = viewModel.addedlinks, author = recipe.author, remrecipe = recipe, id = id) }
     }
 }
 
 @Composable
-fun AddRecipe(
-    addRecipeViewModel: AddRecipeViewModel,
-    ingredients: List<String>,
-    links: List<String>,
-    author: String?,
-    addNewRecipe: (Recipe) -> (Unit) = {}
-) {
+fun EditRecipe(navController: NavController, addRecipeViewModel: AddRecipeViewModel, ingredients: List<String>, links: List<String>, author: String?, addNewRecipe: (Recipe) -> (Unit) = {} ,remrecipe: Recipe, id: String?){
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .fillMaxHeight(),
+        horizontalAlignment = Alignment.CenterHorizontally) {
 
         Text(
-            text = "Add a Recipe",
+            text = "Edit The Recipe",
             style = MaterialTheme.typography.h5,
             color = MaterialTheme.colors.primaryVariant
-        )
-
-        var id by remember { mutableStateOf("") }
-
-        OutlinedTextField(
-            value = id,
-            onValueChange = { value -> id = value },
-            label = { Text(text = "ID") }
         )
 
         var title by remember { mutableStateOf("") }
@@ -129,7 +113,7 @@ fun AddRecipe(
             IconButton(
                 onClick = {
                     addRecipeViewModel.removealling(ingredients)
-                }) {
+                }){
                 Icon(imageVector = Icons.Default.Clear, contentDescription = "remove")
             }
 
@@ -165,13 +149,13 @@ fun AddRecipe(
                     addRecipeViewModel.addlinks(link1)
                     addRecipeViewModel.addlinks(link2)
                     addRecipeViewModel.addlinks(link3)
-                }) {
+                }){
                 Icon(imageVector = Icons.Default.Add, contentDescription = "add")
             }
             IconButton(
                 onClick = {
                     addRecipeViewModel.removealllinks(links)
-                }) {
+                }){
                 Icon(imageVector = Icons.Default.Clear, contentDescription = "remove")
             }
         }
@@ -182,20 +166,12 @@ fun AddRecipe(
         Button(
             modifier = Modifier.padding(16.dp),
             onClick = {
-                val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMANY)
-                val currentDate = sdf.format(Date())
-                val newRecipe = Recipe(
-                    id = null,
-                    title = title,
-                    description = description,
-                    time = currentDate,
-                    images = links,
-                    ingredients = ingredients,
-                    author = author
-                )
+                val newRecipe = Recipe(id = id, title = title, description = description, time = cooktime, images = links, ingredients = ingredients, author = author)
 
+                addRecipeViewModel.removeRecipe(remrecipe)
                 addRecipeViewModel.addRecipe(newRecipe)
                 addNewRecipe(newRecipe)
+                navController.navigate(AppScreens.HomeScreen.name)
             }
         ) {
             Text(text = "Save")
@@ -203,39 +179,3 @@ fun AddRecipe(
 
     }
 }
-
-/**@Composable
-fun AddRecipe(
-    onSaveClick: (Recipe) -> Unit = {}
-){
-    getRecipes()
-    Text(text = "Add a Recipe",
-        style = MaterialTheme.typography.h5,
-        color = MaterialTheme.colors.primaryVariant)
-
-    var text by remember { mutableStateOf("") }
-
-    OutlinedTextField(
-        value = text,
-        onValueChange = { value -> text = value},
-        label = { Text(text = "Note") }
-    )
-
-    Button(
-        modifier = Modifier.padding(16.dp),
-        onClick = {
-            if(text.isNotEmpty()){
-                val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMANY)
-                //val currentDate = sdf.format(Date())
-                val newNote = Recipe(text,)
-
-                onSaveClick(newNote)
-
-                text = ""
-            }
-
-        }) {
-
-        Text( text = "Save")
-    }
-}**/
