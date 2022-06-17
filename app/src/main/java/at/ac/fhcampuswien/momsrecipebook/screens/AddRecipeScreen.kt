@@ -62,14 +62,6 @@ fun AddRecipe(
             color = MaterialTheme.colors.primaryVariant
         )
 
-        var id by remember { mutableStateOf("") }
-
-        OutlinedTextField(
-            value = id,
-            onValueChange = { value -> id = value },
-            label = { Text(text = "ID") }
-        )
-
         var title by remember { mutableStateOf("") }
 
         OutlinedTextField(

@@ -21,6 +21,9 @@ interface RecipeBookAPI {
     @POST("createRecipe")
     fun createRecipe(@Body recipe: Recipe) : Call<Recipe>
 
+    @POST("register")
+    fun register (@Body user: User) : Call<User>
+
     companion object {
         var BASE_URL = "https://recipebookbkend.herokuapp.com/api/"
 

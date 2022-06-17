@@ -23,30 +23,54 @@ import java.util.*
 fun filterRecipe2(id: String?, recipe: List<Recipe>): Recipe {
     return recipe.filter { it.id == id }[0]
 }
+
 @Composable
 fun EditScreen(
     navController: NavController = rememberNavController(),
-    id : String?,
-    viewModel: AddRecipeViewModel
-){
+    id: String?,
+    viewModel: AddRecipeViewModel,
+    addNewRecipe: (Recipe, Recipe) -> Unit
+) {
     val recipe = filterRecipe2(id = id, recipe = viewModel.addedrecipes)
     Scaffold(topBar = {
 
-        SimpleTopAppBar(arrowBackClicked = {navController.popBackStack()}) {
+        SimpleTopAppBar(arrowBackClicked = { navController.popBackStack() }) {
             Text(text = "Edit the Recipe: ${recipe.title}")
         }
-    }){
-        recipe.id?.let { it1 -> EditRecipe(navController = navController, addRecipeViewModel = viewModel, ingredients = viewModel.addedingredient, links = viewModel.addedlinks, author = recipe.author, remrecipe = recipe, id = id) }
+    }) {
+        recipe.id?.let { it1 ->
+            EditRecipe(
+                navController = navController,
+                addRecipeViewModel = viewModel,
+                ingredients = viewModel.addedingredient,
+                links = viewModel.addedlinks,
+                author = recipe.author,
+                remrecipe = recipe,
+                id = id,
+                addNewRecipe = {recipe, oldRecipe -> addNewRecipe(recipe, oldRecipe)}
+            )
+        }
     }
 }
 
 @Composable
-fun EditRecipe(navController: NavController, addRecipeViewModel: AddRecipeViewModel, ingredients: List<String>, links: List<String>, author: String?, addNewRecipe: (Recipe) -> (Unit) = {} ,remrecipe: Recipe, id: String?){
+fun EditRecipe(
+    navController: NavController,
+    addRecipeViewModel: AddRecipeViewModel,
+    ingredients: List<String>,
+    links: List<String>,
+    author: String?,
+    addNewRecipe: (Recipe, Recipe) -> (Unit),
+    remrecipe: Recipe,
+    id: String?
+) {
 
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .fillMaxHeight(),
-        horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
 
         Text(
             text = "Edit The Recipe",
@@ -54,7 +78,7 @@ fun EditRecipe(navController: NavController, addRecipeViewModel: AddRecipeViewMo
             color = MaterialTheme.colors.primaryVariant
         )
 
-        var title by remember { mutableStateOf("") }
+        var title by remember { mutableStateOf( remrecipe.title?.let{remrecipe.title} ) }
 
         OutlinedTextField(
             value = title,
@@ -78,7 +102,7 @@ fun EditRecipe(navController: NavController, addRecipeViewModel: AddRecipeViewMo
             label = { Text(text = "Cooking Time") }
         )
 
-        var quantity by remember { mutableStateOf("")}
+        var quantity by remember { mutableStateOf("") }
         var unit by remember { mutableStateOf("") }
         var name by remember { mutableStateOf("") }
 
@@ -113,7 +137,7 @@ fun EditRecipe(navController: NavController, addRecipeViewModel: AddRecipeViewMo
             IconButton(
                 onClick = {
                     addRecipeViewModel.removealling(ingredients)
-                }){
+                }) {
                 Icon(imageVector = Icons.Default.Clear, contentDescription = "remove")
             }
 
@@ -149,13 +173,13 @@ fun EditRecipe(navController: NavController, addRecipeViewModel: AddRecipeViewMo
                     addRecipeViewModel.addlinks(link1)
                     addRecipeViewModel.addlinks(link2)
                     addRecipeViewModel.addlinks(link3)
-                }){
+                }) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "add")
             }
             IconButton(
                 onClick = {
                     addRecipeViewModel.removealllinks(links)
-                }){
+                }) {
                 Icon(imageVector = Icons.Default.Clear, contentDescription = "remove")
             }
         }
@@ -166,11 +190,19 @@ fun EditRecipe(navController: NavController, addRecipeViewModel: AddRecipeViewMo
         Button(
             modifier = Modifier.padding(16.dp),
             onClick = {
-                val newRecipe = Recipe(id = id, title = title, description = description, time = cooktime, images = links, ingredients = ingredients, author = author)
+                val newRecipe = Recipe(
+                    id = id,
+                    title = title,
+                    description = description,
+                    time = cooktime,
+                    images = links,
+                    ingredients = ingredients,
+                    author = author
+                )
 
-                addRecipeViewModel.removeRecipe(remrecipe)
-                addRecipeViewModel.addRecipe(newRecipe)
-                addNewRecipe(newRecipe)
+                //addRecipeViewModel.removeRecipe(remrecipe)
+                //addRecipeViewModel.addRecipe(newRecipe)
+                addNewRecipe(newRecipe, remrecipe)
                 navController.navigate(AppScreens.HomeScreen.name)
             }
         ) {

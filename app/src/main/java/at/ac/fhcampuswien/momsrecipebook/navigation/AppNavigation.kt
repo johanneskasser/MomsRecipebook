@@ -41,6 +41,18 @@ fun AppNavigation() {
                         })
                 })
         }
+        composable(AppScreens.RegisterScreen.name) {
+            RegisterScreen(
+                navController = navController,
+                onRegister = { username, email, password ->
+                    apiCalls.register(
+                        username = username,
+                        email = email,
+                        password = password,
+                        navController = navController
+                    )
+                })
+        }
         composable(AppScreens.HomeScreen.name) {
             HomeScreen(
                 navController = navController,
@@ -74,16 +86,30 @@ fun AppNavigation() {
                 addNewRecipe = { recipe ->
                     apiCalls.createRecipe(
                         recipe = recipe,
+                        oldRecipe = null,
                         addRecipeViewModel = addRecipeViewModel,
                         navController = navController
                     )
                 })
         }
-        composable(route = AppScreens.EditScreen.name+"/{id}",
-            arguments = listOf(navArgument(name = "id"){
+        composable(route = AppScreens.EditScreen.name + "/{id}",
+            arguments = listOf(navArgument(name = "id") {
                 type = NavType.StringType
-            })){navBackStackEntry ->
-            EditScreen(navController = navController,id = navBackStackEntry.arguments?.getString("id"), addRecipeViewModel)
+            })
+        ) { navBackStackEntry ->
+            EditScreen(
+                navController = navController,
+                id = navBackStackEntry.arguments?.getString("id"),
+                addRecipeViewModel,
+                addNewRecipe = { recipe, oldRecipe ->
+                    apiCalls.createRecipe(
+                        recipe = recipe,
+                        oldRecipe = oldRecipe,
+                        addRecipeViewModel = addRecipeViewModel,
+                        navController = navController
+                    )
+                }
+            )
         }
     }
 }

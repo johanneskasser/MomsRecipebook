@@ -20,11 +20,15 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import at.ac.fhcampuswien.momsrecipebook.navigation.AppScreens
 
 @Composable
-fun LoginScreen(navController: NavController, onLoginClick: (email: String, password: String) -> Unit) {
+fun LoginScreen(
+    navController: NavController,
+    onLoginClick: (email: String, password: String) -> Unit
+) {
     Scaffold(
-        topBar = { TopBar(title = "Login", navController = navController)}
+        topBar = { TopBar(title = "Login", navController = navController) }
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
@@ -33,16 +37,26 @@ fun LoginScreen(navController: NavController, onLoginClick: (email: String, pass
                 .background(Color.White)
                 .fillMaxSize()
         ) {
-            LoginForm(onLoginClick = {email, password ->  onLoginClick(email, password)}/*{ email, password -> auth.signIn(email = email, password = password, navController = navController)*/ )
+            LoginForm(
+                navController = navController,
+                onLoginClick = { email, password ->
+                onLoginClick(
+                    email,
+                    password
+                )
+            }/*{ email, password -> auth.signIn(email = email, password = password, navController = navController)*/)
         }
     }
 }
 
 @Composable
-fun LoginForm(onLoginClick: (email : String, password: String) -> Unit) {
-    val email = remember{(mutableStateOf(TextFieldValue()))}
-    val password = remember{(mutableStateOf(TextFieldValue()))}
-    val showPassword = remember { mutableStateOf(false)}
+fun LoginForm(
+    navController: NavController,
+    onLoginClick: (email: String, password: String) -> Unit
+) {
+    val email = remember { (mutableStateOf(TextFieldValue())) }
+    val password = remember { (mutableStateOf(TextFieldValue())) }
+    val showPassword = remember { mutableStateOf(false) }
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -52,11 +66,11 @@ fun LoginForm(onLoginClick: (email : String, password: String) -> Unit) {
     ) {
         TextField(
             value = email.value,
-            onValueChange = {email.value = it},
+            onValueChange = { email.value = it },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            label = {Text(text = "Email Address")},
+            label = { Text(text = "Email Address") },
             singleLine = true,
             leadingIcon = {
                 Icon(imageVector = Icons.Default.Email, contentDescription = "EmailIcon")
@@ -65,26 +79,26 @@ fun LoginForm(onLoginClick: (email : String, password: String) -> Unit) {
 
         TextField(
             value = password.value,
-            onValueChange = {password.value = it},
+            onValueChange = { password.value = it },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            label = {Text(text = "Password")},
+            label = { Text(text = "Password") },
             shape = RoundedCornerShape(8.dp),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             leadingIcon = {
                 Icon(imageVector = Icons.Default.VpnKey, contentDescription = "PasswordIcon")
             },
             trailingIcon = {
-                if(showPassword.value) {
-                    IconButton(onClick = {showPassword.value = false}) {
+                if (showPassword.value) {
+                    IconButton(onClick = { showPassword.value = false }) {
                         Icon(
                             imageVector = Icons.Filled.Visibility,
                             contentDescription = null
                         )
                     }
                 } else {
-                    IconButton(onClick = {showPassword.value = true}) {
+                    IconButton(onClick = { showPassword.value = true }) {
                         Icon(
                             imageVector = Icons.Filled.VisibilityOff,
                             contentDescription = null
@@ -92,7 +106,7 @@ fun LoginForm(onLoginClick: (email : String, password: String) -> Unit) {
                     }
                 }
             },
-            visualTransformation = if(showPassword.value) VisualTransformation.None else PasswordVisualTransformation(),
+            visualTransformation = if (showPassword.value) VisualTransformation.None else PasswordVisualTransformation(),
             singleLine = true
         )
 
@@ -108,11 +122,10 @@ fun LoginForm(onLoginClick: (email : String, password: String) -> Unit) {
         Row(modifier = Modifier.padding(16.dp)) {
             Text(text = "Not registered yet?")
             Spacer(modifier = Modifier.padding(8.dp))
-            Button(onClick = {/*TODO Add Route to Register Form*/}) {
+            Button(onClick = { navController.navigate(AppScreens.RegisterScreen.name) }) {
                 Text(text = "Register")
             }
         }
-
 
 
     }

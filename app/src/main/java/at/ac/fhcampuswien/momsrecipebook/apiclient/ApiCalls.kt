@@ -39,6 +39,25 @@ class ApiCalls {
         })
     }
 
+    fun register(username: String, email: String, password: String, navController: NavController) {
+        val user = User(_id = null, username = username, email = email, password = password, jwt = null)
+
+        apiInterface.register(user = user).enqueue( object : Callback<User> {
+            override fun onResponse(call: Call<User>, response: Response<User>) {
+                if(response.isSuccessful) {
+                    navController.navigate(AppScreens.LoginScreen.name)
+                } else {
+                    Log.e("USER NOT REGISTERED", "User already exists")
+                }
+            }
+
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                Log.e("ERROR", t.toString())
+            }
+
+        })
+    }
+
     fun getRecipes(userID: String, addRecipeViewModel: AddRecipeViewModel, onFailure: (String) -> Unit) {
         apiInterface.getRecipes(userID = userID).enqueue( object : Callback<List<Recipe>> {
             override fun onResponse(call: Call<List<Recipe>>, response: Response<List<Recipe>>) {
@@ -77,17 +96,18 @@ class ApiCalls {
         })
     }
 
-    fun createRecipe(recipe: Recipe, addRecipeViewModel: AddRecipeViewModel, navController: NavController) {
+    fun createRecipe(recipe: Recipe, oldRecipe: Recipe?, addRecipeViewModel: AddRecipeViewModel, navController: NavController) {
         apiInterface.createRecipe(recipe = recipe).enqueue( object : Callback<Recipe> {
             override fun onResponse(call: Call<Recipe>, response: Response<Recipe>) {
                 if(response.isSuccessful) {
                     val fullRecipe : Recipe? = response.body()
+                    oldRecipe?.let {addRecipeViewModel.removeRecipe(recipe = oldRecipe)}
                     fullRecipe?.let { addRecipeViewModel.removeRecipe(recipe = recipe); addRecipeViewModel.addRecipe(fullRecipe); navController.navigate(AppScreens.HomeScreen.name) }
                 }
             }
 
             override fun onFailure(call: Call<Recipe>, t: Throwable) {
-                TODO("Not yet implemented")
+                Log.e("ERROR", t.toString())
             }
 
         })
