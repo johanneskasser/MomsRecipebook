@@ -22,39 +22,44 @@ import java.util.*
 fun AddRecipeScreen(
     navController: NavController = rememberNavController(),
     viewModel: AddRecipeViewModel,
-    author : String?,
+    author: String?,
     addNewRecipe: (Recipe) -> Unit = {}
-){
+) {
     Scaffold(topBar = {
 
-        SimpleTopAppBar(arrowBackClicked = {navController.popBackStack()}) {
+        SimpleTopAppBar(arrowBackClicked = { navController.popBackStack() }) {
             Text(text = "Add a Recipe")
         }
-    }){
-        AddRecipe(addRecipeViewModel = viewModel, ingredients = viewModel.addedingredient, links = viewModel.addedlinks, author = author, addNewRecipe = {recipe -> addNewRecipe(recipe)})
+    }) {
+        AddRecipe(
+            addRecipeViewModel = viewModel,
+            ingredients = viewModel.addedingredient,
+            links = viewModel.addedlinks,
+            author = author,
+            addNewRecipe = { recipe -> addNewRecipe(recipe) })
     }
 }
 
 @Composable
-fun AddRecipe(addRecipeViewModel: AddRecipeViewModel, ingredients: List<String>, links: List<String>, author: String?, addNewRecipe: (Recipe) -> (Unit) = {} ){
+fun AddRecipe(
+    addRecipeViewModel: AddRecipeViewModel,
+    ingredients: List<String>,
+    links: List<String>,
+    author: String?,
+    addNewRecipe: (Recipe) -> (Unit) = {}
+) {
 
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .fillMaxHeight(),
-        horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
 
         Text(
             text = "Add a Recipe",
             style = MaterialTheme.typography.h5,
             color = MaterialTheme.colors.primaryVariant
-        )
-
-        var id by remember { mutableStateOf("") }
-
-        OutlinedTextField(
-            value = id,
-            onValueChange = { value -> id = value },
-            label = { Text(text = "ID") }
         )
 
         var title by remember { mutableStateOf("") }
@@ -73,7 +78,7 @@ fun AddRecipe(addRecipeViewModel: AddRecipeViewModel, ingredients: List<String>,
             label = { Text(text = "Description") }
         )
 
-        var quantity by remember { mutableStateOf("")}
+        var quantity by remember { mutableStateOf("") }
         var unit by remember { mutableStateOf("") }
         var name by remember { mutableStateOf("") }
 
@@ -96,7 +101,7 @@ fun AddRecipe(addRecipeViewModel: AddRecipeViewModel, ingredients: List<String>,
                 onValueChange = { value -> name = value },
                 label = { Text(text = "Name") }
             )
-            }
+        }
         Row {
             IconButton(
                 onClick = {
@@ -108,52 +113,52 @@ fun AddRecipe(addRecipeViewModel: AddRecipeViewModel, ingredients: List<String>,
             IconButton(
                 onClick = {
                     addRecipeViewModel.removealling(ingredients)
-                }){
+                }) {
                 Icon(imageVector = Icons.Default.Clear, contentDescription = "remove")
             }
 
         }
-            var link1 by remember { mutableStateOf("") }
-            var link2 by remember { mutableStateOf("") }
-            var link3 by remember { mutableStateOf("") }
+        var link1 by remember { mutableStateOf("") }
+        var link2 by remember { mutableStateOf("") }
+        var link3 by remember { mutableStateOf("") }
 
-            Row(Modifier.padding(3.dp)) {
-                OutlinedTextField(
-                    modifier = Modifier.defaultMinSize(50.dp),
-                    value = link1,
-                    onValueChange = { value -> link1 = value },
-                    label = { Text(text = "Link") }
-                )
-                OutlinedTextField(
-                    modifier = Modifier.defaultMinSize(50.dp),
-                    value = link2,
-                    onValueChange = { value -> link2 = value },
-                    label = { Text(text = "Link") }
-                )
-                OutlinedTextField(
-                    modifier = Modifier.defaultMinSize(50.dp),
-                    value = link3,
-                    onValueChange = { value -> link3 = value },
-                    label = { Text(text = "Link") }
-                )
+        Row(Modifier.padding(3.dp)) {
+            OutlinedTextField(
+                modifier = Modifier.defaultMinSize(50.dp),
+                value = link1,
+                onValueChange = { value -> link1 = value },
+                label = { Text(text = "Link") }
+            )
+            OutlinedTextField(
+                modifier = Modifier.defaultMinSize(50.dp),
+                value = link2,
+                onValueChange = { value -> link2 = value },
+                label = { Text(text = "Link") }
+            )
+            OutlinedTextField(
+                modifier = Modifier.defaultMinSize(50.dp),
+                value = link3,
+                onValueChange = { value -> link3 = value },
+                label = { Text(text = "Link") }
+            )
 
+        }
+        Row {
+            IconButton(
+                onClick = {
+                    addRecipeViewModel.addlinks(link1)
+                    addRecipeViewModel.addlinks(link2)
+                    addRecipeViewModel.addlinks(link3)
+                }) {
+                Icon(imageVector = Icons.Default.Add, contentDescription = "add")
             }
-            Row {
-                IconButton(
-                    onClick = {
-                        addRecipeViewModel.addlinks(link1)
-                        addRecipeViewModel.addlinks(link2)
-                        addRecipeViewModel.addlinks(link3)
-                    }){
-                    Icon(imageVector = Icons.Default.Add, contentDescription = "add")
-                }
-                IconButton(
-                    onClick = {
-                        addRecipeViewModel.removealllinks(links)
-                    }){
-                    Icon(imageVector = Icons.Default.Clear, contentDescription = "remove")
-                }
+            IconButton(
+                onClick = {
+                    addRecipeViewModel.removealllinks(links)
+                }) {
+                Icon(imageVector = Icons.Default.Clear, contentDescription = "remove")
             }
+        }
 
 
 
@@ -163,7 +168,15 @@ fun AddRecipe(addRecipeViewModel: AddRecipeViewModel, ingredients: List<String>,
             onClick = {
                 val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMANY)
                 val currentDate = sdf.format(Date())
-                val newRecipe = Recipe(id = null, title = title, description = description, time = currentDate, images = links, ingredients = ingredients, author = author)
+                val newRecipe = Recipe(
+                    id = null,
+                    title = title,
+                    description = description,
+                    time = currentDate,
+                    images = links,
+                    ingredients = ingredients,
+                    author = author
+                )
 
                 addRecipeViewModel.addRecipe(newRecipe)
                 addNewRecipe(newRecipe)
@@ -177,36 +190,36 @@ fun AddRecipe(addRecipeViewModel: AddRecipeViewModel, ingredients: List<String>,
 
 /**@Composable
 fun AddRecipe(
-    onSaveClick: (Recipe) -> Unit = {}
+onSaveClick: (Recipe) -> Unit = {}
 ){
-    getRecipes()
-    Text(text = "Add a Recipe",
-        style = MaterialTheme.typography.h5,
-        color = MaterialTheme.colors.primaryVariant)
+getRecipes()
+Text(text = "Add a Recipe",
+style = MaterialTheme.typography.h5,
+color = MaterialTheme.colors.primaryVariant)
 
-    var text by remember { mutableStateOf("") }
+var text by remember { mutableStateOf("") }
 
-    OutlinedTextField(
-        value = text,
-        onValueChange = { value -> text = value},
-        label = { Text(text = "Note") }
-    )
+OutlinedTextField(
+value = text,
+onValueChange = { value -> text = value},
+label = { Text(text = "Note") }
+)
 
-    Button(
-        modifier = Modifier.padding(16.dp),
-        onClick = {
-            if(text.isNotEmpty()){
-                val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMANY)
-                //val currentDate = sdf.format(Date())
-                val newNote = Recipe(text,)
+Button(
+modifier = Modifier.padding(16.dp),
+onClick = {
+if(text.isNotEmpty()){
+val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMANY)
+//val currentDate = sdf.format(Date())
+val newNote = Recipe(text,)
 
-                onSaveClick(newNote)
+onSaveClick(newNote)
 
-                text = ""
-            }
+text = ""
+}
 
-        }) {
+}) {
 
-        Text( text = "Save")
-    }
+Text( text = "Save")
+}
 }**/

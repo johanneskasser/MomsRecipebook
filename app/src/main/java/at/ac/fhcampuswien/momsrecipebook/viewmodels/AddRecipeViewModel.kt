@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.momsrecipebook.viewmodels
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import at.ac.fhcampuswien.momsrecipebook.models.Ingredient
@@ -24,6 +25,12 @@ class AddRecipeViewModel : ViewModel() {
 
     private fun exists(recipe: Recipe) : Boolean {
         return _addedrecipes.any {r -> r.id == recipe.id}
+    }
+
+    fun removeAllRecipes() {
+        if(addedrecipes.lastIndex > 0) {
+            _addedrecipes.clear()
+        }
     }
 
     fun isadded(recipe: Recipe): Boolean {
