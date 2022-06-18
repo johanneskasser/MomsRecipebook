@@ -24,6 +24,7 @@ import at.ac.fhcampuswien.momsrecipebook.viewmodels.AddRecipeViewModel
 import at.ac.fhcampuswien.momsrecipebook.widgets.EditIcon
 import at.ac.fhcampuswien.momsrecipebook.widgets.RecipeRow
 import at.ac.fhcampuswien.momsrecipebook.widgets.RemoveIcon
+import org.json.JSONObject
 import java.lang.reflect.Modifier
 
 fun filterRecipe(id: String?, recipe: List<Recipe>): Recipe{
@@ -68,9 +69,11 @@ fun MainContent(navController: NavController, recipe: Recipe, addRecipeViewModel
             AnimatedVisibility(visible = showMenu){
                 Column {
                     Text(text = "Cooking Time: ${recipe.time}")
-                    LazyColumn{
+                    Text(text = "Ingredients: ")
+                    LazyColumn {
                         items(recipe.ingredients){ ingredient ->
-                            Text(text = "Ingredients: ${ingredient}")
+                            //TODO: Get right Strings (JSON Displayed)
+                            Text(text = ingredient)
                         }
                     }
                 }

@@ -1,6 +1,7 @@
 package at.ac.fhcampuswien.momsrecipebook.screens
 
 import SimpleTopAppBar
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -9,6 +10,7 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -46,6 +48,7 @@ fun AddRecipe(
     author: String?,
     addNewRecipe: (Recipe) -> (Unit) = {}
 ) {
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -176,6 +179,8 @@ fun AddRecipe(
 
                     addRecipeViewModel.addRecipe(newRecipe)
                     addNewRecipe(newRecipe)
+                } else {
+                    Toast.makeText(context, "Please fill in Title and Description to add Recipe!", Toast.LENGTH_SHORT).show()
                 }
             }
         ) {

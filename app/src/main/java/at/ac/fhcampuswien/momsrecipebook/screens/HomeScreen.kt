@@ -31,31 +31,56 @@ import at.ac.fhcampuswien.momsrecipebook.widgets.RecipeRow
 import at.ac.fhcampuswien.momsrecipebook.widgets.RemoveIcon
 
 @Composable
-fun HomeScreen( navController: NavController = rememberNavController(), viewModel: AddRecipeViewModel, onLogoutEvent: (String) -> Unit = {}){
+fun HomeScreen(
+    navController: NavController = rememberNavController(),
+    viewModel: AddRecipeViewModel,
+    onLogoutEvent: (String) -> Unit = {},
+    onRemoveClick: (Recipe) -> Unit
+) {
 
     Scaffold(topBar = {
-        TopAppBar(navController = navController, onLogout = { onLogoutEvent("Logout") }, addRecipeViewModel = viewModel, ingredients = viewModel.addedingredient)
-    }){
-        MainContent(navController = navController, addRecipeViewModel = viewModel, recipes = viewModel.addedrecipes, ingredients = viewModel.addedingredient)
+        TopAppBar(
+            navController = navController,
+            onLogout = { onLogoutEvent("Logout") },
+            addRecipeViewModel = viewModel,
+            ingredients = viewModel.addedingredient
+        )
+    }) {
+        MainContent(
+            navController = navController,
+            addRecipeViewModel = viewModel,
+            recipes = viewModel.addedrecipes,
+            ingredients = viewModel.addedingredient,
+            onRemoveClick = {recipe -> onRemoveClick(recipe) }
+        )
     }
 
 }
 
 @Composable
-fun MainContent(navController: NavController, addRecipeViewModel: AddRecipeViewModel, recipes: List<Recipe>,ingredients: List<String>){
-    LazyColumn{
+fun MainContent(
+    navController: NavController,
+    addRecipeViewModel: AddRecipeViewModel,
+    recipes: List<Recipe>,
+    ingredients: List<String>,
+    onRemoveClick: (Recipe) -> (Unit)
+) {
+    LazyColumn {
         items(recipes) { recipe ->
             RecipeRow(recipe = recipe,
-                onItemClick = {id -> navController.navigate(AppScreens.DetailScreen.name+"/$id")})
+                onItemClick = { id -> navController.navigate(AppScreens.DetailScreen.name + "/$id") })
             {
                 Row {
-
                     EditIcon(recipe = recipe,
-                        onEditClick = {id -> navController.navigate(AppScreens.EditScreen.name+"/$id")
-                                    addRecipeViewModel.removealling(ingredients)})
+                        onEditClick = { id ->
+                            navController.navigate(AppScreens.EditScreen.name + "/$id")
+                            addRecipeViewModel.removealling(ingredients)
+                        })
 
-                    RemoveIcon(recipe){r ->
-                        if(addRecipeViewModel.isadded(r)){
+
+                    RemoveIcon(recipe) { r ->
+                        if (addRecipeViewModel.isadded(r)) {
+                            onRemoveClick(r)
                             addRecipeViewModel.removeRecipe(r)
                         }
                     }
@@ -66,21 +91,28 @@ fun MainContent(navController: NavController, addRecipeViewModel: AddRecipeViewM
 }
 
 @Composable
-fun TopAppBar(navController: NavController, onLogout: (String) -> Unit = {}, addRecipeViewModel: AddRecipeViewModel, ingredients: List<String>) {
-    var showMenu by remember { mutableStateOf(false)}
+fun TopAppBar(
+    navController: NavController,
+    onLogout: (String) -> Unit = {},
+    addRecipeViewModel: AddRecipeViewModel,
+    ingredients: List<String>
+) {
+    var showMenu by remember { mutableStateOf(false) }
 
     TopAppBar(
         title = { Text("Moms Recipe Book") },
         actions = {
-                IconButton(onClick = { showMenu = !showMenu }) {
-                    Icon(imageVector = Icons.Default.MoreVert, contentDescription = "More")
-                }
+            IconButton(onClick = { showMenu = !showMenu }) {
+                Icon(imageVector = Icons.Default.MoreVert, contentDescription = "More")
+            }
             DropdownMenu(
                 expanded = showMenu,
                 onDismissRequest = { showMenu = false }
             ) {
-                DropdownMenuItem(onClick = { navController.navigate(route = AppScreens.AddRecipeScreen.name)
-                                            addRecipeViewModel.removealling(ingredients)}) {
+                DropdownMenuItem(onClick = {
+                    navController.navigate(route = AppScreens.AddRecipeScreen.name)
+                    addRecipeViewModel.removealling(ingredients)
+                }) {
                     Row {
                         Icon(
                             imageVector = Icons.Default.Add,

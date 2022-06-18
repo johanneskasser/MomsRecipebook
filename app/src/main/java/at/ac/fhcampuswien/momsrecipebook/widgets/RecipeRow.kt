@@ -25,8 +25,12 @@ import coil.size.Scale
 import coil.size.Scale.*
 
 @Composable
-fun RecipeRow(recipe: Recipe, onItemClick: (String) -> Unit = {}, content: @Composable () -> Unit = {}) {
-    Card (
+fun RecipeRow(
+    recipe: Recipe,
+    onItemClick: (String) -> Unit = {},
+    content: @Composable () -> Unit = {}
+) {
+    Card(
         modifier = Modifier
             .padding(4.dp)
             .fillMaxWidth()
@@ -36,36 +40,46 @@ fun RecipeRow(recipe: Recipe, onItemClick: (String) -> Unit = {}, content: @Comp
         shape = RoundedCornerShape(4.dp),
         elevation = 6.dp
     ) {
-        Row(modifier = Modifier
-            .padding(6.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Column(modifier = Modifier.padding(6.dp)) {
-                LazyRow {
-                    for (image in recipe.images) {
-                        item {
-                            AsyncImage(model = image, contentDescription = "${recipe.title} ${recipe.id}" ,contentScale = ContentScale.Crop,modifier = Modifier.size(400.dp,150.dp))
-                        }
+        Column(modifier = Modifier.padding(6.dp)) {
+            LazyRow {
+                for (image in recipe.images) {
+                    item {
+                        AsyncImage(
+                            model = image,
+                            contentDescription = "${recipe.title} ${recipe.id}",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.size(400.dp, 150.dp)
+                        )
                     }
                 }
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(text = recipe.title, style = MaterialTheme.typography.h5)
-                Text(text = recipe.description, style = MaterialTheme.typography.h6)
             }
-            content()
+            Row(
+                modifier = Modifier
+                    .padding(6.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column(
+                    modifier = Modifier.padding(6.dp)
+                ) {
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(text = recipe.title, style = MaterialTheme.typography.h5)
+                    Text(text = recipe.description, style = MaterialTheme.typography.h6)
+                }
+                content()
+            }
         }
     }
+
 }
 
 @Composable
 fun RemoveIcon(
     recipe: Recipe = getRecipes()[0],
-    isadded: Boolean = false,
     onRemoveClick: (Recipe) -> Unit = {}
-){
+) {
     IconButton(modifier = Modifier.width(80.dp),
-        onClick = {onRemoveClick(recipe)}) {
+        onClick = { onRemoveClick(recipe) }) {
         Icon(
             tint = MaterialTheme.colors.secondary,
             imageVector = Icons.Default.Delete,
@@ -75,7 +89,10 @@ fun RemoveIcon(
 }
 
 @Composable
-fun EditIcon(recipe: Recipe, onEditClick: (String) -> Unit ={}, content: @Composable () -> Unit? = {}) {
+fun EditIcon(
+    recipe: Recipe,
+    onEditClick: (String) -> Unit = {},
+) {
     IconButton(onClick = { recipe.id?.let { onEditClick(it) } }) {
         Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit")
     }

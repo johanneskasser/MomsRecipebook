@@ -36,14 +36,15 @@ fun RegisterScreen(navController: NavController, onRegister: (String, String, St
                 .fillMaxSize()
         ) {
             RegisterForm(
-                onRegister = {username, email, password -> onRegister(username, email, password)}
+                navController = navController,
+                onRegister = { username, email, password -> onRegister(username, email, password) }
             )
         }
     }
 }
 
 @Composable
-fun RegisterForm(onRegister: (String, String, String) -> (Unit)) {
+fun RegisterForm(navController: NavController, onRegister: (String, String, String) -> (Unit)) {
     val email = remember { (mutableStateOf(TextFieldValue())) }
     val password = remember { (mutableStateOf(TextFieldValue())) }
     val showPassword = remember { mutableStateOf(false) }
@@ -117,13 +118,21 @@ fun RegisterForm(onRegister: (String, String, String) -> (Unit)) {
 
         Button(
             onClick = {
-                      onRegister(username.value.text, email.value.text, password.value.text)
+                onRegister(username.value.text, email.value.text, password.value.text)
             },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
             Text(text = "Register")
+        }
+
+        Row(modifier = Modifier.padding(16.dp)) {
+            Text(text = "Already registered?")
+            Spacer(modifier = Modifier.padding(8.dp))
+            Button(onClick = { navController.navigate(AppScreens.LoginScreen.name) }) {
+                Text(text = "Login")
+            }
         }
     }
 

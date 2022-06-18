@@ -2,6 +2,7 @@ package at.ac.fhcampuswien.momsrecipebook.navigation
 
 import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -10,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import at.ac.fhcampuswien.momsrecipebook.apiclient.ApiCalls
 import at.ac.fhcampuswien.momsrecipebook.screens.*
+import at.ac.fhcampuswien.momsrecipebook.services.makeToast
 import at.ac.fhcampuswien.momsrecipebook.viewmodel.AuthViewModel
 import at.ac.fhcampuswien.momsrecipebook.viewmodels.AddRecipeViewModel
 
@@ -18,7 +20,8 @@ fun AppNavigation() {
     val navController = rememberNavController()
     val authViewModel: AuthViewModel = viewModel()
     val addRecipeViewModel: AddRecipeViewModel = viewModel()
-    val apiCalls: ApiCalls = ApiCalls()
+    val apiCalls = ApiCalls()
+    val context = LocalContext.current
 
     NavHost(navController = navController, startDestination = AppScreens.LoginScreen.name) {
         composable(AppScreens.LoginScreen.name) {
@@ -29,14 +32,14 @@ fun AppNavigation() {
                         email = email,
                         password = password,
                         navController = navController,
-                        onFailure = { Log.d("Login Error", "Login failed") },           //TODO Add Information About Wrong Login in UI
+                        onFailure = { makeToast(context = context, message = "Login Failed!") },
                         onSuccess = { user ->
                             authViewModel.signIn(user)
                             user._id?.let { uid ->
                                 apiCalls.getRecipes(
                                     userID = uid,
                                     addRecipeViewModel = addRecipeViewModel,
-                                    onFailure = { errormessage -> Log.e("Error", errormessage) })  //TODO Add Information About Failed Fetch in UI
+                                    onFailure = { errormessage -> makeToast(context = context, message = errormessage) })
                             }
                         })
                 })
@@ -49,7 +52,8 @@ fun AppNavigation() {
                         username = username,
                         email = email,
                         password = password,
-                        navController = navController
+                        navController = navController,
+                        onResponse = {message -> makeToast(context = context, message = message)}
                     )
                 })
         }
@@ -64,7 +68,26 @@ fun AppNavigation() {
                     )
                     addRecipeViewModel.removeAllRecipes()
                     authViewModel.logout()
-                })
+                },
+                onRemoveClick = { recipe ->
+                    recipe.id?.let { it1 ->
+                        apiCalls.deleteRecipe(it1,
+                            onSuccess = { message ->
+                                makeToast(
+                                    context = context,
+                                    message = message
+                                )
+                            },
+                            onFailure = { message ->
+                                makeToast(
+                                    context = context,
+                                    message = message
+                                )
+                            }
+                        )
+                    }
+                }
+            )
         }
         composable(
             route = AppScreens.DetailScreen.name + "/{id}",
@@ -100,13 +123,13 @@ fun AppNavigation() {
             EditScreen(
                 navController = navController,
                 id = navBackStackEntry.arguments?.getString("id"),
-                addRecipeViewModel,
+                viewModel = addRecipeViewModel,
                 addNewRecipe = { recipe, oldRecipe ->
-                    apiCalls.createRecipe(
+                    apiCalls.editRecipe(
                         recipe = recipe,
-                        oldRecipe = oldRecipe,
                         addRecipeViewModel = addRecipeViewModel,
-                        navController = navController
+                        navController = navController,
+                        onResponse = {message -> makeToast(context = context, message = message)}
                     )
                 }
             )

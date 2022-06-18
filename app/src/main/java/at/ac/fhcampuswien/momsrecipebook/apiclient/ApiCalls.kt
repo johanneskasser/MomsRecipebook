@@ -34,25 +34,26 @@ class ApiCalls {
 
             override fun onFailure(call: Call<User>, t: Throwable) {
                 Log.e("Fail at Call", "User")
-                onFailure("Wrong Username or Password!")
+                onFailure("Internet Connection lost, please try again!")
             }
         })
     }
 
-    fun register(username: String, email: String, password: String, navController: NavController) {
+    fun register(username: String, email: String, password: String, navController: NavController, onResponse: (String) -> (Unit)) {
         val user = User(_id = null, username = username, email = email, password = password, jwt = null)
 
         apiInterface.register(user = user).enqueue( object : Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 if(response.isSuccessful) {
                     navController.navigate(AppScreens.LoginScreen.name)
+                    onResponse("User successfully registered!")
                 } else {
-                    Log.e("USER NOT REGISTERED", "User already exists")
+                    onResponse("User already registered!")
                 }
             }
 
             override fun onFailure(call: Call<User>, t: Throwable) {
-                Log.e("ERROR", t.toString())
+                onResponse("Internet Connection Lost! Please try again!")
             }
 
         })
@@ -69,12 +70,12 @@ class ApiCalls {
                         }
                     }
                 } else {
-                    onFailure("Failed to load Users Recipes")
+                    onFailure("No Recipes added yet!")
                 }
             }
 
             override fun onFailure(call: Call<List<Recipe>>, t: Throwable) {
-                Log.e("ERROR", t.toString())
+                onFailure("Internet Connection Lost! Please try again!")
             }
 
         })
@@ -108,6 +109,42 @@ class ApiCalls {
 
             override fun onFailure(call: Call<Recipe>, t: Throwable) {
                 Log.e("ERROR", t.toString())
+            }
+
+        })
+    }
+
+    fun editRecipe(recipe: Recipe, addRecipeViewModel: AddRecipeViewModel, navController: NavController, onResponse: (String) -> Unit) {
+        apiInterface.editRecipe(recipe = recipe).enqueue(object :  Callback<Recipe> {
+            override fun onResponse(call: Call<Recipe>, response: Response<Recipe>) {
+                if(response.isSuccessful) {
+                    val updatedRecipe : Recipe? = response.body()
+                    updatedRecipe?.let { addRecipeViewModel.addRecipe(updatedRecipe); navController.navigate(AppScreens.HomeScreen.name) }
+                    onResponse("Recipe updated successfully!")
+                } else {
+                    onResponse("Recipe could not be found in Database!")
+                }
+            }
+
+            override fun onFailure(call: Call<Recipe>, t: Throwable) {
+                onResponse("Internet Connection Lost! Please try again!")
+            }
+
+        })
+    }
+
+    fun deleteRecipe(_id: String, onSuccess: (String) -> Unit, onFailure: (String) -> Unit) {
+        apiInterface.deleteRecipe(_id = _id).enqueue(object : Callback<Unit> {
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if(response.isSuccessful) {
+                    onSuccess("Recipe deleted successfully!")
+                } else {
+                    onSuccess("ERROR 404: Recipe not found!")
+                }
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                onFailure("Internet Connection lost! Please try again!")
             }
 
         })
