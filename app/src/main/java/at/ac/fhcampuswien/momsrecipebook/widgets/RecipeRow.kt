@@ -81,4 +81,3 @@ fun EditIcon(recipe: Recipe, onEditClick: (String) -> Unit ={}, content: @Compos
     }
 
 }
-

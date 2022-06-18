@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import at.ac.fhcampuswien.momsrecipebook.apiclient.ApiCalls
+import at.ac.fhcampuswien.momsrecipebook.models.Ingredient
 import at.ac.fhcampuswien.momsrecipebook.models.Recipe
 import at.ac.fhcampuswien.momsrecipebook.models.getRecipes
 import at.ac.fhcampuswien.momsrecipebook.navigation.AppScreens
@@ -33,15 +34,15 @@ import at.ac.fhcampuswien.momsrecipebook.widgets.RemoveIcon
 fun HomeScreen( navController: NavController = rememberNavController(), viewModel: AddRecipeViewModel, onLogoutEvent: (String) -> Unit = {}){
 
     Scaffold(topBar = {
-        TopAppBar(navController = navController, onLogout = { onLogoutEvent("Logout") })
+        TopAppBar(navController = navController, onLogout = { onLogoutEvent("Logout") }, addRecipeViewModel = viewModel, ingredients = viewModel.addedingredient)
     }){
-        MainContent(navController = navController, addRecipeViewModel = viewModel, recipes = viewModel.addedrecipes)
+        MainContent(navController = navController, addRecipeViewModel = viewModel, recipes = viewModel.addedrecipes, ingredients = viewModel.addedingredient)
     }
 
 }
 
 @Composable
-fun MainContent(navController: NavController, addRecipeViewModel: AddRecipeViewModel, recipes: List<Recipe>){
+fun MainContent(navController: NavController, addRecipeViewModel: AddRecipeViewModel, recipes: List<Recipe>,ingredients: List<String>){
     LazyColumn{
         items(recipes) { recipe ->
             RecipeRow(recipe = recipe,
@@ -50,7 +51,8 @@ fun MainContent(navController: NavController, addRecipeViewModel: AddRecipeViewM
                 Row {
 
                     EditIcon(recipe = recipe,
-                        onEditClick = {id -> navController.navigate(AppScreens.EditScreen.name+"/$id")})
+                        onEditClick = {id -> navController.navigate(AppScreens.EditScreen.name+"/$id")
+                                    addRecipeViewModel.removealling(ingredients)})
 
                     RemoveIcon(recipe){r ->
                         if(addRecipeViewModel.isadded(r)){
@@ -64,20 +66,21 @@ fun MainContent(navController: NavController, addRecipeViewModel: AddRecipeViewM
 }
 
 @Composable
-fun TopAppBar(navController: NavController, onLogout: (String) -> Unit = {}) {
+fun TopAppBar(navController: NavController, onLogout: (String) -> Unit = {}, addRecipeViewModel: AddRecipeViewModel, ingredients: List<String>) {
     var showMenu by remember { mutableStateOf(false)}
 
     TopAppBar(
         title = { Text("Moms Recipe Book") },
         actions = {
-            IconButton(onClick = { showMenu = !showMenu }) {
-                Icon(imageVector = Icons.Default.MoreVert, contentDescription = "More")
-            }
+                IconButton(onClick = { showMenu = !showMenu }) {
+                    Icon(imageVector = Icons.Default.MoreVert, contentDescription = "More")
+                }
             DropdownMenu(
                 expanded = showMenu,
                 onDismissRequest = { showMenu = false }
             ) {
-                DropdownMenuItem(onClick = { navController.navigate(route = AppScreens.AddRecipeScreen.name) }) { //navigation zum FavoriteScreen
+                DropdownMenuItem(onClick = { navController.navigate(route = AppScreens.AddRecipeScreen.name)
+                                            addRecipeViewModel.removealling(ingredients)}) {
                     Row {
                         Icon(
                             imageVector = Icons.Default.Add,

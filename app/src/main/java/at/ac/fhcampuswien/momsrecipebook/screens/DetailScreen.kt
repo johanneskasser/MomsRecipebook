@@ -2,15 +2,19 @@ package at.ac.fhcampuswien.momsrecipebook.screens
 
 import SimpleTopAppBar
 import TopBar
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import at.ac.fhcampuswien.momsrecipebook.models.Recipe
@@ -39,13 +43,13 @@ fun DetailScreen(
             Text(text = recipe.title)
         } }
     ){
-        MainContent(navController = navController, recipe = recipe)
+        MainContent(navController = navController, recipe = recipe, addRecipeViewModel = viewModel, ingredients = viewModel.addedingredient)
     }
 }
 
 @Composable
-fun MainContent(navController: NavController, recipe: Recipe){
-    var showMenu by remember { mutableStateOf(true) }
+fun MainContent(navController: NavController, recipe: Recipe, addRecipeViewModel: AddRecipeViewModel, ingredients: List<String>){
+    var showMenu by remember { mutableStateOf(false) }
 
     Surface(
         modifier = androidx.compose.ui.Modifier
@@ -58,8 +62,30 @@ fun MainContent(navController: NavController, recipe: Recipe){
         ){
            RecipeRow(recipe = recipe) {
                EditIcon(recipe = recipe,
-                   onEditClick = {id -> navController.navigate(AppScreens.EditScreen.name+"/$id")})
+                   onEditClick = {id -> navController.navigate(AppScreens.EditScreen.name+"/$id")
+                            addRecipeViewModel.removealling(ingredients)})
            }
+            AnimatedVisibility(visible = showMenu){
+                Column {
+                    Text(text = "Cooking Time: ${recipe.time}")
+                    LazyColumn{
+                        items(recipe.ingredients){ ingredient ->
+                            Text(text = "Ingredients: ${ingredient}")
+                        }
+                    }
+                }
+            }
+            Icon(imageVector =
+            if (showMenu) Icons.Filled.KeyboardArrowDown
+            else Icons.Filled.KeyboardArrowUp,
+                contentDescription = "expand",
+                modifier = androidx.compose.ui.Modifier
+                    .size(25.dp)
+                    .clickable {
+                        showMenu = !showMenu
+                    },
+                tint = Color.DarkGray)
+
         }
     }
 }

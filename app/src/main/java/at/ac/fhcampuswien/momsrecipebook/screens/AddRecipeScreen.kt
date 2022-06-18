@@ -15,8 +15,6 @@ import androidx.navigation.compose.rememberNavController
 import at.ac.fhcampuswien.momsrecipebook.models.Ingredient
 import at.ac.fhcampuswien.momsrecipebook.models.Recipe
 import at.ac.fhcampuswien.momsrecipebook.viewmodels.AddRecipeViewModel
-import java.text.SimpleDateFormat
-import java.util.*
 
 @Composable
 fun AddRecipeScreen(
@@ -78,6 +76,7 @@ fun AddRecipe(
             label = { Text(text = "Description") }
         )
 
+
         var cooktime by remember { mutableStateOf("") }
 
         OutlinedTextField(
@@ -118,13 +117,6 @@ fun AddRecipe(
                 }) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "add")
             }
-            IconButton(
-                onClick = {
-                    addRecipeViewModel.removealling(ingredients)
-                }) {
-                Icon(imageVector = Icons.Default.Clear, contentDescription = "remove")
-            }
-
         }
         var link1 by remember { mutableStateOf("") }
         var link2 by remember { mutableStateOf("") }
@@ -168,26 +160,23 @@ fun AddRecipe(
             }
         }
 
-
-
-
         Button(
             modifier = Modifier.padding(16.dp),
             onClick = {
-                val sdf = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMANY)
-                val currentDate = sdf.format(Date())
-                val newRecipe = Recipe(
-                    id = null,
-                    title = title,
-                    description = description,
-                    time = currentDate,
-                    images = links,
-                    ingredients = ingredients,
-                    author = author
-                )
+                if (title.isNotEmpty() && description.isNotEmpty()) {
+                    val newRecipe = Recipe(
+                        id = null,
+                        title = title,
+                        description = description,
+                        time = cooktime,
+                        author = author,
+                        images = links,
+                        ingredients = ingredients
+                    )
 
-                addRecipeViewModel.addRecipe(newRecipe)
-                addNewRecipe(newRecipe)
+                    addRecipeViewModel.addRecipe(newRecipe)
+                    addNewRecipe(newRecipe)
+                }
             }
         ) {
             Text(text = "Save")
@@ -195,6 +184,7 @@ fun AddRecipe(
 
     }
 }
+
 
 /**@Composable
 fun AddRecipe(

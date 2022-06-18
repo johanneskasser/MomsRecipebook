@@ -86,7 +86,7 @@ fun EditRecipe(
             label = { Text(text = "Title") }
         )
 
-        var description by remember { mutableStateOf("") }
+        var description by remember { mutableStateOf(remrecipe.description?.let{remrecipe.description} ) }
 
         OutlinedTextField(
             value = description,
