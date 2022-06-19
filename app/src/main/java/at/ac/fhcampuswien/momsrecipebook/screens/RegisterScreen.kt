@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
@@ -21,6 +22,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import at.ac.fhcampuswien.momsrecipebook.navigation.AppScreens
+import at.ac.fhcampuswien.momsrecipebook.services.makeToast
 
 
 @Composable
@@ -49,6 +51,7 @@ fun RegisterForm(navController: NavController, onRegister: (String, String, Stri
     val password = remember { (mutableStateOf(TextFieldValue())) }
     val showPassword = remember { mutableStateOf(false) }
     val username = remember { (mutableStateOf(TextFieldValue())) }
+    val context = LocalContext.current
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -118,7 +121,12 @@ fun RegisterForm(navController: NavController, onRegister: (String, String, Stri
 
         Button(
             onClick = {
-                onRegister(username.value.text, email.value.text, password.value.text)
+                val digits = "0123456789"
+                if(password.value.text.length > 10 && password.value.text.any {it in digits}) {
+                    onRegister(username.value.text, email.value.text, password.value.text)
+                } else {
+                    makeToast(context = context, "Please provide a password longer than 10 Symbols containing digits!")
+                }
             },
             modifier = Modifier
                 .fillMaxWidth()
