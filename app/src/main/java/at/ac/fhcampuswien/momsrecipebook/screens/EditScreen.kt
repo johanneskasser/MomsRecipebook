@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -16,6 +17,7 @@ import at.ac.fhcampuswien.momsrecipebook.models.Ingredient
 import at.ac.fhcampuswien.momsrecipebook.models.Recipe
 import at.ac.fhcampuswien.momsrecipebook.models.getRecipes
 import at.ac.fhcampuswien.momsrecipebook.navigation.AppScreens
+import at.ac.fhcampuswien.momsrecipebook.services.makeToast
 import at.ac.fhcampuswien.momsrecipebook.viewmodels.AddRecipeViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -64,6 +66,7 @@ fun EditRecipe(
     remrecipe: Recipe,
     id: String?
 ) {
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -94,7 +97,7 @@ fun EditRecipe(
             label = { Text(text = "Description") }
         )
 
-        var cooktime by remember { mutableStateOf("") }
+        var cooktime by remember { mutableStateOf(remrecipe.time?.let{remrecipe.time}) }
 
         OutlinedTextField(
             value = cooktime,
@@ -136,6 +139,10 @@ fun EditRecipe(
                         .replace(", name=", " ")
                         .replace(")","")
                     addRecipeViewModel.addingredient(newIngredient)
+                    makeToast(context = context, "Ingredient added successfully!")
+                    quantity = ""
+                    unit = ""
+                    name = ""
                 }) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "add")
             }
@@ -204,11 +211,7 @@ fun EditRecipe(
                     ingredients = ingredients,
                     author = author
                 )
-
-                //addRecipeViewModel.removeRecipe(remrecipe)
-                //addRecipeViewModel.addRecipe(newRecipe)
                 addNewRecipe(newRecipe, remrecipe)
-                //navController.navigate(AppScreens.HomeScreen.name)
             }
         ) {
             Text(text = "Save")

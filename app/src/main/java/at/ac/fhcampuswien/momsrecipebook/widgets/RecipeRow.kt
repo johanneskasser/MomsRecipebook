@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import at.ac.fhcampuswien.momsrecipebook.models.Recipe
 import at.ac.fhcampuswien.momsrecipebook.models.getRecipes
@@ -60,11 +61,11 @@ fun RecipeRow(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Column(
-                    modifier = Modifier.padding(6.dp)
+                    modifier = Modifier.padding(6.dp).width(250.dp)
                 ) {
                     Spacer(modifier = Modifier.height(4.dp))
-                    Text(text = recipe.title, style = MaterialTheme.typography.h5)
-                    Text(text = recipe.description, style = MaterialTheme.typography.h6)
+                    Text(text = recipe.title, style = MaterialTheme.typography.h5, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text(text = recipe.description, style = MaterialTheme.typography.h6, maxLines = 2, overflow = TextOverflow.Ellipsis)
                 }
                 content()
             }

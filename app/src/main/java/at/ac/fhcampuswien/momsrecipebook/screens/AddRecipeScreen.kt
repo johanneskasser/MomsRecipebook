@@ -16,6 +16,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import at.ac.fhcampuswien.momsrecipebook.models.Ingredient
 import at.ac.fhcampuswien.momsrecipebook.models.Recipe
+import at.ac.fhcampuswien.momsrecipebook.services.makeToast
 import at.ac.fhcampuswien.momsrecipebook.viewmodels.AddRecipeViewModel
 
 @Composable
@@ -122,6 +123,10 @@ fun AddRecipe(
                         .replace(", name=", " ")
                         .replace(")","")
                     addRecipeViewModel.addingredient(newIngredient)
+                    makeToast(context = context, "Ingredient added successfully!")
+                    quantity = ""
+                    unit = ""
+                    name = ""
                 }) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "add")
             }

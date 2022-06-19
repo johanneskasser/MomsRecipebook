@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -67,13 +68,20 @@ fun MainContent(navController: NavController, recipe: Recipe, addRecipeViewModel
                             addRecipeViewModel.removealling(ingredients)})
            }
             AnimatedVisibility(visible = showMenu){
-                Column {
-                    Text(text = "Cooking Time: ${recipe.time}")
-                    Text(text = "Ingredients: ")
+                Column (
+                    modifier = androidx.compose.ui.Modifier
+                        .padding(5.dp)
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.Start
+
+                ){
+                    Text(text = "Cooking Time:", style = MaterialTheme.typography.h6)
+                    Text(text = recipe.time, style = MaterialTheme.typography.body1)
+                    Spacer(modifier = androidx.compose.ui.Modifier.height(4.dp))
+                    Text(text = "Ingredients: ", style = MaterialTheme.typography.h6)
                     LazyColumn {
                         items(recipe.ingredients){ ingredient ->
-                            //TODO: Get right Strings (JSON Displayed)
-                            Text(text = ingredient)
+                            Text(text = ingredient, style = MaterialTheme.typography.body1)
                         }
                     }
                 }
