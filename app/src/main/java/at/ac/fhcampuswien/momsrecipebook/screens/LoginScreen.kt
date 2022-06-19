@@ -52,7 +52,7 @@ fun LoginScreen(
 @Composable
 fun LoginForm(
     navController: NavController,
-    onLoginClick: (email: String, password: String) -> Unit
+    onLoginClick: (email: String, password: String) -> Unit,
 ) {
     val email = remember { (mutableStateOf(TextFieldValue())) }
     val password = remember { (mutableStateOf(TextFieldValue())) }
