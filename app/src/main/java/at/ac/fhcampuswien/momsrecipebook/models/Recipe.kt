@@ -15,17 +15,17 @@ data class Recipe(
     @SerializedName("_id")
     val id: String?,
     @SerializedName("title")
-    val title: String,
+    var title: String,
     @SerializedName("description")
-    val description: String,
+    var description: String,
     @SerializedName("time")
-    val time: String,
+    var time: String,
     @SerializedName("author")
     val author: String?,
     @SerializedName("images")
-    val images: List<String>,
+    var images: List<String>,
     @SerializedName("ingredients")
-    val ingredients: List<String>
+    var ingredients: List<String>
 )
 
 fun getRecipes(): List<Recipe> {

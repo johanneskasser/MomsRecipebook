@@ -124,7 +124,7 @@ fun AppNavigation() {
                 navController = navController,
                 id = navBackStackEntry.arguments?.getString("id"),
                 viewModel = addRecipeViewModel,
-                addNewRecipe = { recipe, oldRecipe ->
+                addNewRecipe = { recipe, _ ->
                     apiCalls.editRecipe(
                         recipe = recipe,
                         addRecipeViewModel = addRecipeViewModel,

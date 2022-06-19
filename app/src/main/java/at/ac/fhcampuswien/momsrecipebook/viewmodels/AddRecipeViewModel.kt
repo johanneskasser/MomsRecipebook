@@ -61,5 +61,13 @@ class AddRecipeViewModel : ViewModel() {
         _addedlinks.removeAll(link)
     }
 
+    fun updateRecipe(recipe: Recipe) {
+        addedrecipes.filter{ it.id == recipe.id }[0].title = recipe.title
+        addedrecipes.filter{ it.id == recipe.id }[0].description = recipe.description
+        addedrecipes.filter{ it.id == recipe.id }[0].images = recipe.images
+        addedrecipes.filter{ it.id == recipe.id }[0].ingredients = recipe.ingredients
+        addedrecipes.filter{ it.id == recipe.id }[0].time = recipe.time
+    }
+
 
 }

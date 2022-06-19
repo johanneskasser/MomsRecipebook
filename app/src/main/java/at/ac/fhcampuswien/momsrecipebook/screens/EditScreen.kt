@@ -208,7 +208,7 @@ fun EditRecipe(
                 //addRecipeViewModel.removeRecipe(remrecipe)
                 //addRecipeViewModel.addRecipe(newRecipe)
                 addNewRecipe(newRecipe, remrecipe)
-                navController.navigate(AppScreens.HomeScreen.name)
+                //navController.navigate(AppScreens.HomeScreen.name)
             }
         ) {
             Text(text = "Save")
