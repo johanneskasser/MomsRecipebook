@@ -116,6 +116,11 @@ fun AddRecipe(
             IconButton(
                 onClick = {
                     val newIngredient = Ingredient(quantity, unit, name).toString()
+                        .replace("Ingredient","")
+                        .replace("(quantity="," ")
+                        .replace(", unit=","")
+                        .replace(", name=", " ")
+                        .replace(")","")
                     addRecipeViewModel.addingredient(newIngredient)
                 }) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "add")
