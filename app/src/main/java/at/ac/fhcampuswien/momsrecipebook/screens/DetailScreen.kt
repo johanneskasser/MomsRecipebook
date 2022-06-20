@@ -45,12 +45,12 @@ fun DetailScreen(
             Text(text = recipe.title)
         } }
     ){
-        MainContent(navController = navController, recipe = recipe, addRecipeViewModel = viewModel, ingredients = viewModel.addedingredient)
+        MainContent(navController = navController, recipe = recipe, addRecipeViewModel = viewModel, ingredients = viewModel.addedingredient, links = viewModel.addedlinks)
     }
 }
 
 @Composable
-fun MainContent(navController: NavController, recipe: Recipe, addRecipeViewModel: AddRecipeViewModel, ingredients: List<String>){
+fun MainContent(navController: NavController, recipe: Recipe, addRecipeViewModel: AddRecipeViewModel, ingredients: List<String>, links: List<String>){
     var showMenu by remember { mutableStateOf(false) }
 
     Surface(
@@ -65,7 +65,9 @@ fun MainContent(navController: NavController, recipe: Recipe, addRecipeViewModel
            RecipeRow(recipe = recipe) {
                EditIcon(recipe = recipe,
                    onEditClick = {id -> navController.navigate(AppScreens.EditScreen.name+"/$id")
-                            addRecipeViewModel.removealling(ingredients)})
+                            addRecipeViewModel.removealling(ingredients)
+                            addRecipeViewModel.removealllinks(links)})
+
            }
             AnimatedVisibility(visible = showMenu){
                 Column (

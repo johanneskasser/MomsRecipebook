@@ -43,7 +43,8 @@ fun HomeScreen(
             navController = navController,
             onLogout = { onLogoutEvent("Logout") },
             addRecipeViewModel = viewModel,
-            ingredients = viewModel.addedingredient
+            ingredients = viewModel.addedingredient,
+            links = viewModel.addedlinks
         )
     }) {
         MainContent(
@@ -51,7 +52,8 @@ fun HomeScreen(
             addRecipeViewModel = viewModel,
             recipes = viewModel.addedrecipes,
             ingredients = viewModel.addedingredient,
-            onRemoveClick = {recipe -> onRemoveClick(recipe) }
+            onRemoveClick = {recipe -> onRemoveClick(recipe) },
+            links = viewModel.addedlinks
         )
     }
 
@@ -63,7 +65,8 @@ fun MainContent(
     addRecipeViewModel: AddRecipeViewModel,
     recipes: List<Recipe>,
     ingredients: List<String>,
-    onRemoveClick: (Recipe) -> (Unit)
+    onRemoveClick: (Recipe) -> (Unit),
+    links: List<String>
 ) {
     LazyColumn {
         items(recipes) { recipe ->
@@ -75,6 +78,7 @@ fun MainContent(
                         onEditClick = { id ->
                             navController.navigate(AppScreens.EditScreen.name + "/$id")
                             addRecipeViewModel.removealling(ingredients)
+                            addRecipeViewModel.removealllinks(links)
                         })
 
 
@@ -95,7 +99,8 @@ fun TopAppBar(
     navController: NavController,
     onLogout: (String) -> Unit = {},
     addRecipeViewModel: AddRecipeViewModel,
-    ingredients: List<String>
+    ingredients: List<String>,
+    links: List<String>
 ) {
     var showMenu by remember { mutableStateOf(false) }
 
@@ -112,6 +117,7 @@ fun TopAppBar(
                 DropdownMenuItem(onClick = {
                     navController.navigate(route = AppScreens.AddRecipeScreen.name)
                     addRecipeViewModel.removealling(ingredients)
+                    addRecipeViewModel.removealllinks(links)
                 }) {
                     Row {
                         Icon(

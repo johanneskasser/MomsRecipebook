@@ -123,12 +123,6 @@ fun EditRecipe(
                 }) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "add")
             }
-            IconButton(
-                onClick = {
-                    addRecipeViewModel.removealllinks(links)
-                }) {
-                Icon(imageVector = Icons.Default.Clear, contentDescription = "remove")
-            }
         }
 
         var quantity by remember { mutableStateOf("") }
