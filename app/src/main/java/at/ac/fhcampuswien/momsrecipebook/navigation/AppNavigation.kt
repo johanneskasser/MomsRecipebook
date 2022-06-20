@@ -12,7 +12,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import at.ac.fhcampuswien.momsrecipebook.apiclient.ApiCalls
 import at.ac.fhcampuswien.momsrecipebook.screens.*
-import at.ac.fhcampuswien.momsrecipebook.services.ProgressSpinner
 import at.ac.fhcampuswien.momsrecipebook.services.makeToast
 import at.ac.fhcampuswien.momsrecipebook.viewmodel.AuthViewModel
 import at.ac.fhcampuswien.momsrecipebook.viewmodels.AddRecipeViewModel

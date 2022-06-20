@@ -42,7 +42,6 @@ fun EditScreen(
     }) {
         recipe.id?.let { it1 ->
             EditRecipe(
-                navController = navController,
                 addRecipeViewModel = viewModel,
                 ingredients = viewModel.addedingredient,
                 links = viewModel.addedlinks,
@@ -57,7 +56,6 @@ fun EditScreen(
 
 @Composable
 fun EditRecipe(
-    navController: NavController,
     addRecipeViewModel: AddRecipeViewModel,
     ingredients: List<String>,
     links: List<String>,
@@ -104,6 +102,34 @@ fun EditRecipe(
             onValueChange = { value -> cooktime = value },
             label = { Text(text = "Cooking Time") }
         )
+
+
+        var link1 by remember { mutableStateOf("") }
+
+        Row(Modifier.padding(3.dp)) {
+            OutlinedTextField(
+                value = link1,
+                onValueChange = { value -> link1 = value },
+                label = { Text(text = "Link") }
+            )
+
+        }
+        Row {
+            IconButton(
+                onClick = {
+                    addRecipeViewModel.addlinks(link1)
+                    makeToast(context = context, "Link successfully added!")
+                    link1 = ""
+                }) {
+                Icon(imageVector = Icons.Default.Add, contentDescription = "add")
+            }
+            IconButton(
+                onClick = {
+                    addRecipeViewModel.removealllinks(links)
+                }) {
+                Icon(imageVector = Icons.Default.Clear, contentDescription = "remove")
+            }
+        }
 
         var quantity by remember { mutableStateOf("") }
         var unit by remember { mutableStateOf("") }
@@ -154,50 +180,6 @@ fun EditRecipe(
             }
 
         }
-        var link1 by remember { mutableStateOf("") }
-        var link2 by remember { mutableStateOf("") }
-        var link3 by remember { mutableStateOf("") }
-
-        Row(Modifier.padding(3.dp)) {
-            OutlinedTextField(
-                modifier = Modifier.defaultMinSize(50.dp),
-                value = link1,
-                onValueChange = { value -> link1 = value },
-                label = { Text(text = "Link") }
-            )
-            OutlinedTextField(
-                modifier = Modifier.defaultMinSize(50.dp),
-                value = link2,
-                onValueChange = { value -> link2 = value },
-                label = { Text(text = "Link") }
-            )
-            OutlinedTextField(
-                modifier = Modifier.defaultMinSize(50.dp),
-                value = link3,
-                onValueChange = { value -> link3 = value },
-                label = { Text(text = "Link") }
-            )
-
-        }
-        Row {
-            IconButton(
-                onClick = {
-                    addRecipeViewModel.addlinks(link1)
-                    addRecipeViewModel.addlinks(link2)
-                    addRecipeViewModel.addlinks(link3)
-                }) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "add")
-            }
-            IconButton(
-                onClick = {
-                    addRecipeViewModel.removealllinks(links)
-                }) {
-                Icon(imageVector = Icons.Default.Clear, contentDescription = "remove")
-            }
-        }
-
-
-
 
         Button(
             modifier = Modifier.padding(16.dp),
